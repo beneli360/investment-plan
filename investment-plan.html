@@ -1,0 +1,1126 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#080D12">
+<title>תיק המיליון</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap">
+
+<style>
+:root{
+  --ground:#080D12;
+  --ground-2:#0C141B;
+  --surface:#111B24;
+  --surface-2:#16222D;
+  --line:#22313F;
+  --line-soft:#1A2731;
+  --text:#E9F1F7;
+  --muted:#8DA2B4;
+  --faint:#5E7488;
+  --core:#5D7CFA;
+  --tech:#22D3EE;
+  --cash:#10B981;
+  --warn:#F59E0B;
+  --r-sm:10px; --r-md:14px; --r-lg:20px; --r-xl:26px;
+  --shell:430px;
+  --ease:cubic-bezier(.22,.9,.3,1);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--ground);
+  background-image:
+    radial-gradient(120% 60% at 50% -10%, rgba(93,124,250,.16), transparent 60%),
+    radial-gradient(90% 50% at 50% 105%, rgba(16,185,129,.10), transparent 60%);
+  background-attachment:fixed;
+  color:var(--text);
+  font-family:"Assistant","Heebo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px;
+  line-height:1.55;
+  font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{margin:0;font-weight:700;text-wrap:balance;line-height:1.2}
+p{margin:0}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--tech);outline-offset:3px;border-radius:6px}
+
+/* ── shell ───────────────────────────────────────── */
+.app{
+  max-width:var(--shell);
+  margin-inline:auto;
+  min-height:100dvh;
+  padding-bottom:calc(88px + env(safe-area-inset-bottom));
+  position:relative;
+}
+@media (min-width:520px){
+  .app{
+    border-inline:1px solid var(--line-soft);
+    background:linear-gradient(180deg,rgba(17,27,36,.32),rgba(8,13,18,.32));
+    box-shadow:0 0 90px rgba(0,0,0,.6);
+  }
+}
+
+.topbar{
+  position:sticky;top:0;z-index:30;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:14px 18px 12px;
+  background:linear-gradient(180deg,rgba(8,13,18,.94),rgba(8,13,18,.72) 70%,transparent);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+.brand{display:flex;flex-direction:column;gap:1px}
+.brand .kicker{
+  font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--faint);font-weight:600;
+}
+.brand .name{font-family:"Frank Ruhl Libre",serif;font-size:20px;font-weight:700;letter-spacing:-.01em}
+.stamp{
+  display:flex;flex-direction:column;align-items:flex-start;
+  padding:5px 11px;border-radius:999px;
+  border:1px solid var(--line);background:var(--surface);
+}
+.stamp b{font-size:13px;font-weight:700;line-height:1.15}
+.stamp span{font-size:9.5px;color:var(--faint);letter-spacing:.08em;font-weight:600}
+
+/* ── views ───────────────────────────────────────── */
+.views{padding:4px 16px 0}
+.view{display:none}
+.view.is-on{display:block;animation:enter .34s var(--ease) both}
+@keyframes enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.stack{display:flex;flex-direction:column;gap:14px}
+.eyebrow{
+  display:flex;align-items:center;gap:8px;
+  font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--faint);margin:6px 2px 0;
+}
+.eyebrow::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+
+.card{
+  background:linear-gradient(180deg,rgba(22,34,45,.86),rgba(17,27,36,.86));
+  border:1px solid var(--line-soft);
+  border-radius:var(--r-lg);
+  padding:16px;
+  box-shadow:0 10px 28px rgba(0,0,0,.34);
+}
+
+/* ── hero ────────────────────────────────────────── */
+.hero{
+  position:relative;overflow:hidden;
+  padding:20px 18px 18px;
+  background:
+    radial-gradient(130% 100% at 100% 0%, rgba(93,124,250,.20), transparent 62%),
+    linear-gradient(180deg,rgba(22,34,45,.95),rgba(14,22,30,.95));
+  border:1px solid var(--line);
+  border-radius:var(--r-xl);
+  box-shadow:0 16px 40px rgba(0,0,0,.42);
+}
+.hero .label{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.04em}
+.hero .figure{
+  font-family:"Frank Ruhl Libre",serif;
+  font-size:clamp(40px,13vw,52px);font-weight:900;letter-spacing:-.02em;line-height:1.02;
+  margin-top:2px;
+}
+.hero .figure small{display:inline-block;font-size:.44em;font-weight:700;color:var(--muted);margin-inline-start:9px}
+.hero-meta{display:flex;gap:8px;margin-top:14px}
+.metric{
+  flex:1;padding:9px 10px;border-radius:var(--r-md);
+  background:rgba(8,13,18,.55);border:1px solid var(--line-soft);
+}
+.metric b{display:block;font-size:16px;font-weight:700;line-height:1.2}
+.metric span{font-size:10.5px;color:var(--faint);font-weight:600;letter-spacing:.03em}
+
+/* ── donut ───────────────────────────────────────── */
+.donut-wrap{display:flex;align-items:center;gap:14px}
+.donut{width:142px;height:142px;flex:none;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
+.donut .seg{cursor:pointer;transition:opacity .2s var(--ease),stroke-width .2s var(--ease)}
+.donut .seg:hover{stroke-width:17}
+.donut .hole-a{font-family:"Frank Ruhl Libre",serif;font-size:19px;font-weight:700;fill:var(--text)}
+.donut .hole-b{font-size:9px;font-weight:700;fill:var(--faint);letter-spacing:.12em}
+.legend{display:flex;flex-direction:column;gap:9px;flex:1;min-width:0}
+.legend-row{display:flex;align-items:center;gap:9px}
+.chip{width:9px;height:9px;border-radius:3px;flex:none}
+.legend-row .lg-name{font-size:13px;font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.legend-row .lg-val{font-size:12.5px;color:var(--muted);font-weight:600}
+
+/* ── pillar cards ────────────────────────────────── */
+.pillar{
+  width:100%;text-align:start;display:block;
+  background:linear-gradient(180deg,rgba(22,34,45,.86),rgba(17,27,36,.86));
+  border:1px solid var(--line-soft);
+  border-radius:var(--r-lg);
+  padding:14px 15px 15px;
+  transition:transform .18s var(--ease),border-color .18s var(--ease),background .18s var(--ease);
+  box-shadow:0 10px 26px rgba(0,0,0,.3);
+}
+.pillar:hover{border-color:var(--line);background:linear-gradient(180deg,rgba(27,41,54,.9),rgba(20,31,41,.9))}
+.pillar:active{transform:scale(.985)}
+.pillar-top{display:flex;align-items:flex-start;gap:10px}
+.pillar-title{flex:1;min-width:0}
+.pillar-title h3{font-size:16.5px;letter-spacing:-.01em}
+.pillar-title p{font-size:11.5px;color:var(--muted);margin-top:2px;font-weight:500}
+.pillar-pct{
+  font-family:"Frank Ruhl Libre",serif;font-size:26px;font-weight:900;line-height:1;
+  letter-spacing:-.02em;
+}
+.pillar-pct span{font-size:14px;font-weight:700}
+.meter{height:5px;border-radius:99px;background:rgba(8,13,18,.7);margin-top:12px;overflow:hidden}
+.meter i{display:block;height:100%;border-radius:99px}
+.pillar-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px}
+.pillar-foot .amt{font-size:14.5px;font-weight:700}
+.tag{
+  font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;
+  border:1px solid currentColor;opacity:.9;
+}
+.more{
+  display:flex;align-items:center;gap:5px;
+  font-size:11.5px;color:var(--faint);font-weight:600;margin-top:10px;
+  padding-top:9px;border-top:1px dashed var(--line-soft);
+}
+.more svg{width:13px;height:13px}
+
+/* ── note ────────────────────────────────────────── */
+.note{
+  display:flex;gap:10px;align-items:flex-start;
+  padding:12px 14px;border-radius:var(--r-md);
+  background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.24);
+}
+.note svg{width:17px;height:17px;color:var(--warn);flex:none;margin-top:2px}
+.note p{font-size:12.5px;color:#E4CFA6;line-height:1.5}
+.note b{color:var(--warn)}
+
+/* ── sliders ─────────────────────────────────────── */
+.ctrl + .ctrl{margin-top:16px}
+.ctrl-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:9px}
+.ctrl-head label{font-size:13px;font-weight:600;color:var(--text)}
+.ctrl-val{font-family:"Frank Ruhl Libre",serif;font-size:20px;font-weight:700;line-height:1}
+.ctrl-val em{font-style:normal;font-size:12px;font-weight:600;color:var(--faint);margin-inline-start:3px}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;
+  direction:ltr;width:100%;height:34px;background:transparent;cursor:pointer;display:block;
+}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:99px;background:var(--track)}
+input[type=range]::-moz-range-track{height:6px;border-radius:99px;background:var(--track)}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:24px;height:24px;border-radius:50%;margin-top:-9px;
+  background:#fff;border:5px solid var(--accent);
+  box-shadow:0 3px 10px rgba(0,0,0,.55);transition:transform .15s var(--ease);
+}
+input[type=range]::-moz-range-thumb{
+  width:24px;height:24px;border-radius:50%;border:5px solid var(--accent);background:#fff;
+  box-shadow:0 3px 10px rgba(0,0,0,.55);
+}
+input[type=range]:active::-webkit-slider-thumb{transform:scale(1.12)}
+.scale{display:flex;justify-content:space-between;direction:ltr;font-size:10px;color:var(--faint);font-weight:600;margin-top:-2px}
+
+/* ── KPI ─────────────────────────────────────────── */
+.kpi{
+  padding:16px 18px;border-radius:var(--r-xl);
+  background:radial-gradient(120% 120% at 0% 0%,rgba(34,211,238,.16),transparent 60%),
+             linear-gradient(180deg,rgba(22,34,45,.95),rgba(14,22,30,.95));
+  border:1px solid var(--line);
+  box-shadow:0 16px 40px rgba(0,0,0,.4);
+}
+.kpi .label{font-size:11.5px;color:var(--muted);font-weight:600;letter-spacing:.05em}
+.kpi .big{
+  font-family:"Frank Ruhl Libre",serif;font-weight:900;letter-spacing:-.025em;line-height:1.02;
+  font-size:clamp(34px,11vw,46px);margin-top:2px;
+}
+.kpi-row{display:flex;gap:8px;margin-top:14px}
+.kpi-row .metric b{font-size:15px}
+.gain{color:var(--cash)}
+
+.split{display:flex;flex-direction:column;gap:10px}
+.split-row{display:flex;align-items:center;gap:10px}
+.split-row .sr-name{font-size:12.5px;font-weight:600;width:74px;flex:none}
+.split-bar{flex:1;height:7px;border-radius:99px;background:rgba(8,13,18,.7);overflow:hidden}
+.split-bar i{display:block;height:100%;border-radius:99px;transition:width .35s var(--ease)}
+.split-row .sr-val{font-size:12.5px;font-weight:700;width:70px;text-align:end;flex:none}
+
+/* ── chart ───────────────────────────────────────── */
+.chart{width:100%;height:auto;display:block;overflow:visible;direction:ltr}
+.chart .grid{stroke:var(--line-soft);stroke-width:1}
+.chart .axis{fill:var(--faint);font-size:9.5px;font-weight:600;font-family:"Assistant",sans-serif}
+.chart .principal{stroke:var(--warn);stroke-width:1.2;stroke-dasharray:4 4;opacity:.7}
+.chart .p-label{fill:var(--warn);font-size:9px;font-weight:700;font-family:"Assistant",sans-serif;opacity:.9}
+
+/* ── table ───────────────────────────────────────── */
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-inline:-4px;padding-inline:4px}
+table{border-collapse:collapse;width:100%;font-size:12px}
+th,td{padding:8px 6px;text-align:start;white-space:nowrap}
+thead th{
+  font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);
+  font-weight:700;border-bottom:1px solid var(--line);
+}
+tbody td{border-bottom:1px solid var(--line-soft);font-weight:600;color:var(--muted)}
+tbody td:first-child{color:var(--text);font-weight:700}
+tbody .t-total{color:var(--text);font-weight:700}
+tbody .t-gain{color:var(--cash)}
+tbody tr.is-now td{background:rgba(93,124,250,.12)}
+tbody tr.is-now td:first-child{box-shadow:inset 3px 0 0 var(--core)}
+[dir=rtl] tbody tr.is-now td:first-child{box-shadow:inset -3px 0 0 var(--core)}
+
+/* ── stepper ─────────────────────────────────────── */
+.progress{display:flex;align-items:center;gap:11px}
+.progress-bar{flex:1;height:6px;border-radius:99px;background:rgba(8,13,18,.7);overflow:hidden}
+.progress-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--core),var(--cash));border-radius:99px;transition:width .4s var(--ease)}
+.progress b{font-size:12.5px;font-weight:700;white-space:nowrap}
+
+.step{position:relative;padding-inline-start:34px}
+.step::before{
+  content:"";position:absolute;inset-block:22px -14px;inset-inline-start:11px;
+  width:2px;background:linear-gradient(180deg,var(--line),transparent);
+}
+.step:last-child::before{display:none}
+.step-num{
+  position:absolute;inset-inline-start:0;top:0;
+  width:24px;height:24px;border-radius:50%;
+  display:grid;place-items:center;
+  font-size:11.5px;font-weight:700;
+  background:var(--surface-2);border:1px solid var(--line);color:var(--muted);
+  transition:all .25s var(--ease);
+}
+.step.is-done .step-num{background:var(--cash);border-color:var(--cash);color:#04231A}
+.step-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.step-head h3{font-size:15.5px}
+.when{font-size:10.5px;font-weight:700;color:var(--faint);white-space:nowrap;letter-spacing:.04em}
+.tasks{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+.task{
+  display:flex;align-items:flex-start;gap:10px;width:100%;text-align:start;
+  padding:10px 12px;min-height:44px;
+  border-radius:var(--r-md);
+  background:rgba(8,13,18,.42);border:1px solid var(--line-soft);
+  transition:background .2s var(--ease),border-color .2s var(--ease),opacity .2s var(--ease);
+}
+.task:hover{background:rgba(12,20,27,.7);border-color:var(--line)}
+.task:active{transform:scale(.99)}
+.box{
+  width:19px;height:19px;flex:none;margin-top:1px;border-radius:6px;
+  border:1.6px solid var(--faint);display:grid;place-items:center;
+  transition:all .2s var(--ease);
+}
+.box svg{width:12px;height:12px;stroke-width:3.2;opacity:0;transform:scale(.6);transition:all .2s var(--ease)}
+.task[aria-pressed=true] .box{background:var(--cash);border-color:var(--cash);color:#04231A}
+.task[aria-pressed=true] .box svg{opacity:1;transform:none}
+.task[aria-pressed=true] .task-text{color:var(--faint);text-decoration:line-through;text-decoration-color:var(--line)}
+.task-text{font-size:12.5px;line-height:1.5;color:var(--text);font-weight:500}
+
+/* ── DCA timeline ────────────────────────────────── */
+.dca{display:flex;align-items:flex-end;gap:5px;height:118px;margin-top:14px}
+.dca-col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:100%}
+.dca-col i{display:block;border-radius:2px;min-height:3px;flex:none}
+.dca-x{display:flex;gap:5px;margin-top:7px}
+.dca-x span{flex:1;text-align:center;font-size:9.5px;color:var(--faint);font-weight:700}
+
+/* ── accordion ───────────────────────────────────── */
+.acc{
+  border:1px solid var(--line-soft);border-radius:var(--r-lg);overflow:hidden;
+  background:linear-gradient(180deg,rgba(22,34,45,.72),rgba(17,27,36,.72));
+  transition:border-color .2s var(--ease);
+}
+.acc.is-open{border-color:var(--line)}
+.acc-btn{
+  width:100%;display:flex;align-items:center;gap:12px;
+  padding:14px 15px;text-align:start;min-height:56px;
+}
+.acc-icon{
+  width:34px;height:34px;flex:none;border-radius:11px;display:grid;place-items:center;
+  border:1px solid var(--line);background:rgba(8,13,18,.55);
+}
+.acc-icon svg{width:17px;height:17px}
+.acc-btn h3{flex:1;font-size:14.5px;letter-spacing:-.01em}
+.acc-chev{width:17px;height:17px;color:var(--faint);flex:none;transition:transform .28s var(--ease)}
+.acc.is-open .acc-chev{transform:rotate(180deg)}
+.acc-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s var(--ease)}
+.acc.is-open .acc-body{grid-template-rows:1fr}
+.acc-inner{overflow:hidden;min-height:0}
+.acc-pad{padding:0 15px 15px;display:flex;flex-direction:column;gap:11px}
+.acc-pad p{font-size:13px;line-height:1.62;color:var(--muted)}
+.acc-pad strong{color:var(--text);font-weight:700}
+.fact{
+  display:flex;align-items:baseline;gap:9px;
+  padding:10px 12px;border-radius:var(--r-md);
+  background:rgba(8,13,18,.5);border:1px solid var(--line-soft);
+}
+.fact b{font-family:"Frank Ruhl Libre",serif;font-size:19px;font-weight:900;line-height:1;letter-spacing:-.02em}
+.fact span{font-size:11.5px;color:var(--muted);font-weight:600;line-height:1.4}
+
+.disclaimer{
+  margin:22px 2px 8px;padding-top:14px;border-top:1px solid var(--line-soft);
+  font-size:11px;line-height:1.6;color:var(--faint);
+}
+
+/* ── bottom nav ──────────────────────────────────── */
+.tabbar{
+  position:fixed;inset-inline:0;bottom:0;z-index:40;
+  max-width:var(--shell);margin-inline:auto;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:2px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+  background:rgba(9,14,20,.82);
+  backdrop-filter:blur(20px) saturate(140%);
+  -webkit-backdrop-filter:blur(20px) saturate(140%);
+  border-top:1px solid var(--line-soft);
+}
+.tab{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:8px 2px 6px;min-height:52px;border-radius:14px;
+  color:var(--faint);transition:color .2s var(--ease),background .2s var(--ease);
+}
+.tab svg{width:21px;height:21px;transition:transform .25s var(--ease)}
+.tab span{font-size:10px;font-weight:700;letter-spacing:.01em}
+.tab:hover{color:var(--muted)}
+.tab[aria-selected=true]{color:var(--text);background:rgba(93,124,250,.13)}
+.tab[aria-selected=true] svg{transform:translateY(-1px);color:var(--core)}
+
+/* ── sheet ───────────────────────────────────────── */
+.scrim{
+  position:fixed;inset:0;z-index:50;background:rgba(3,6,9,.72);
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  opacity:0;pointer-events:none;transition:opacity .3s var(--ease);
+}
+.scrim.is-on{opacity:1;pointer-events:auto}
+.sheet{
+  position:fixed;inset-inline:0;bottom:0;z-index:60;
+  max-width:var(--shell);margin-inline:auto;
+  max-height:88dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  background:linear-gradient(180deg,#16222D,#0C141B 40%);
+  border:1px solid var(--line);border-bottom:0;
+  border-radius:26px 26px 0 0;
+  padding:10px 18px calc(26px + env(safe-area-inset-bottom));
+  transform:translateY(101%);
+  transition:transform .38s var(--ease);
+  box-shadow:0 -20px 60px rgba(0,0,0,.6);
+}
+.sheet.is-on{transform:none}
+.handle{width:38px;height:4px;border-radius:99px;background:var(--line);margin:0 auto 14px}
+.sheet-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.sheet-head h2{font-family:"Frank Ruhl Libre",serif;font-size:23px;font-weight:900;letter-spacing:-.02em}
+.sheet-head p{font-size:12px;color:var(--muted);margin-top:3px;font-weight:500}
+.sheet-close{
+  width:32px;height:32px;flex:none;border-radius:50%;display:grid;place-items:center;
+  background:var(--surface-2);border:1px solid var(--line);color:var(--muted);
+  transition:color .2s var(--ease),background .2s var(--ease);
+}
+.sheet-close:hover{color:var(--text);background:var(--line)}
+.sheet-close svg{width:15px;height:15px;stroke-width:2.4}
+.sheet-stats{display:flex;gap:8px;margin-bottom:16px}
+.detail{display:flex;gap:11px;padding:12px 0;border-top:1px solid var(--line-soft)}
+.detail .d-ico{
+  width:30px;height:30px;flex:none;border-radius:9px;display:grid;place-items:center;
+  background:rgba(8,13,18,.6);border:1px solid var(--line-soft);
+}
+.detail .d-ico svg{width:15px;height:15px}
+.detail h4{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700}
+.detail p{font-size:13px;line-height:1.6;color:var(--text);margin-top:3px;font-weight:400}
+.projection{
+  margin-top:14px;padding:14px 15px;border-radius:var(--r-lg);
+  border:1px solid var(--line);background:rgba(8,13,18,.55);
+}
+.projection .label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700}
+.projection .val{font-family:"Frank Ruhl Libre",serif;font-size:30px;font-weight:900;letter-spacing:-.025em;line-height:1.1;margin-top:3px}
+.projection .sub{font-size:12.5px;color:var(--cash);font-weight:700;margin-top:2px}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
+</style>
+
+<div class="app" id="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="kicker">תוכנית הקצאת הון</span>
+      <span class="name">תיק המיליון</span>
+    </div>
+    <div class="stamp">
+      <b id="stampVal">1,000,000 ₪</b>
+      <span>אופק 7–10 שנים</span>
+    </div>
+  </header>
+
+  <main class="views" id="views">
+
+    <!-- ═══ 1 · סקירה והקצאה ═══════════════════════ -->
+    <section class="view is-on" data-view="0" role="tabpanel" aria-label="סקירה והקצאה">
+      <div class="stack">
+
+        <div class="hero">
+          <span class="label">הון להשקעה</span>
+          <div class="figure" id="heroFigure">1,000,000<small>₪</small></div>
+          <div class="hero-meta">
+            <div class="metric"><b id="heroWeighted">8.35%</b><span>תשואה משוקללת</span></div>
+            <div class="metric"><b>7–10</b><span>שנות אופק</span></div>
+            <div class="metric"><b>3</b><span>אפיקים</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="donut-wrap">
+            <svg class="donut" viewBox="0 0 140 140" role="img" aria-label="פילוח התיק: 65% עוגן גלובלי, 25% טכנולוגיה, 10% קרן כספית">
+              <g transform="rotate(-90 70 70)" fill="none" stroke-linecap="butt">
+                <circle cx="70" cy="70" r="54" stroke="#0A1219" stroke-width="15"></circle>
+                <circle class="seg" data-open="core" cx="70" cy="70" r="54" stroke="#5D7CFA" stroke-width="15"
+                        stroke-dasharray="218.5 120.8" stroke-dashoffset="0"></circle>
+                <circle class="seg" data-open="tech" cx="70" cy="70" r="54" stroke="#22D3EE" stroke-width="15"
+                        stroke-dasharray="82.8 256.5" stroke-dashoffset="-220.5"></circle>
+                <circle class="seg" data-open="cash" cx="70" cy="70" r="54" stroke="#10B981" stroke-width="15"
+                        stroke-dasharray="31.9 307.4" stroke-dashoffset="-305.4"></circle>
+              </g>
+              <text class="hole-a" x="70" y="68" text-anchor="middle">1.00 מ׳</text>
+              <text class="hole-b" x="70" y="82" text-anchor="middle">שקלים</text>
+            </svg>
+            <div class="legend" id="legend"></div>
+          </div>
+        </div>
+
+        <div class="eyebrow">שלושת האפיקים</div>
+        <div class="stack" id="pillars"></div>
+
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+          <p>התיק כולו <b>נזיל</b> — שוק הון וקרן כספית בלבד. אין נדל״ן, אין נעילות ואין תחנות יציאה. אפשר לממש כל חלק ממנו תוך יום מסחר אחד.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ 2 · סימולטור ══════════════════════════ -->
+    <section class="view" data-view="1" role="tabpanel" aria-label="סימולטור צמיחה">
+      <div class="stack">
+
+        <div class="kpi">
+          <span class="label">שווי התיק בעוד <b id="kpiYears">10</b> שנים</span>
+          <div class="big" id="kpiTotal">2,261,000 ₪</div>
+          <div class="kpi-row">
+            <div class="metric"><b class="gain" id="kpiProfit">+1,261,000</b><span>רווח מריבית דריבית</span></div>
+            <div class="metric"><b id="kpiMult">פי 2.26</b><span>על הכסף</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <svg class="chart" id="chart" viewBox="0 0 330 178" role="img" aria-label="עקומת צמיחת התיק לאורך השנים"></svg>
+        </div>
+
+        <div class="card">
+          <div class="eyebrow" style="margin-top:0">הנחות המודל</div>
+          <div style="margin-top:14px">
+            <div class="ctrl" style="--accent:#5D7CFA">
+              <div class="ctrl-head">
+                <label for="sYears">אופק ההשקעה</label>
+                <span class="ctrl-val"><span id="vYears">10</span><em>שנים</em></span>
+              </div>
+              <input type="range" id="sYears" min="1" max="20" step="1" value="10">
+              <div class="scale"><span>1</span><span>20</span></div>
+            </div>
+            <div class="ctrl" style="--accent:#5D7CFA">
+              <div class="ctrl-head">
+                <label for="sCore">תשואת עוגן גלובלי</label>
+                <span class="ctrl-val"><span id="vCore">8.0</span><em>%</em></span>
+              </div>
+              <input type="range" id="sCore" min="4" max="12" step="0.5" value="8">
+              <div class="scale"><span>4%</span><span>12%</span></div>
+            </div>
+            <div class="ctrl" style="--accent:#22D3EE">
+              <div class="ctrl-head">
+                <label for="sTech">תשואת טכנולוגיה</label>
+                <span class="ctrl-val"><span id="vTech">11.0</span><em>%</em></span>
+              </div>
+              <input type="range" id="sTech" min="6" max="16" step="0.5" value="11">
+              <div class="scale"><span>6%</span><span>16%</span></div>
+            </div>
+            <div class="ctrl" style="--accent:#10B981">
+              <div class="ctrl-head">
+                <label for="sCash">תשואת קרן כספית</label>
+                <span class="ctrl-val"><span id="vCash">4.0</span><em>%</em></span>
+              </div>
+              <input type="range" id="sCash" min="1" max="6" step="0.5" value="4">
+              <div class="scale"><span>1%</span><span>6%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="eyebrow" style="margin-top:0">הרכב התיק ביעד</div>
+          <div class="split" id="split" style="margin-top:14px"></div>
+        </div>
+
+        <div class="card">
+          <div class="eyebrow" style="margin-top:0">אבני דרך</div>
+          <div class="table-scroll" style="margin-top:10px">
+            <table>
+              <thead>
+                <tr>
+                  <th>שנה</th><th>עוגן</th><th>טכנולוגיה</th><th>כספית</th><th>סה״כ</th><th>רווח</th>
+                </tr>
+              </thead>
+              <tbody id="milestones"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+          <p>הסימולטור מניח תשואה קבועה בכל שנה. <b>המציאות מתנהגת אחרת</b> — שנים של 25%+ ושנים של מינוס 20%. הממוצע הוא היעד, לא הנתיב.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ 3 · תוכנית פעולה ══════════════════════ -->
+    <section class="view" data-view="2" role="tabpanel" aria-label="תוכנית פעולה">
+      <div class="stack">
+
+        <div class="card">
+          <div class="progress">
+            <div class="progress-bar"><i id="progFill" style="width:0%"></i></div>
+            <b id="progText">0 / 9</b>
+          </div>
+          <p style="font-size:12px;color:var(--muted);margin-top:10px">סמן משימות תוך כדי ביצוע — ההתקדמות נשמרת במכשיר.</p>
+        </div>
+
+        <div class="card">
+          <div class="eyebrow" style="margin-top:0">מסלול הפריסה · 7 חודשים</div>
+          <div class="legend" style="flex-direction:row;gap:14px;margin-top:12px">
+            <div class="legend-row" style="gap:6px"><i class="chip" style="background:#5D7CFA"></i><span class="lg-val">עוגן</span></div>
+            <div class="legend-row" style="gap:6px"><i class="chip" style="background:#22D3EE"></i><span class="lg-val">טכנולוגיה</span></div>
+            <div class="legend-row" style="gap:6px"><i class="chip" style="background:#10B981"></i><span class="lg-val">כספית</span></div>
+          </div>
+          <div class="dca" id="dca" dir="ltr"></div>
+          <div class="dca-x" id="dcaX" dir="ltr"></div>
+        </div>
+
+        <div class="eyebrow">ארבעה שלבים</div>
+        <div class="stack" id="steps" style="gap:22px"></div>
+
+      </div>
+    </section>
+
+    <!-- ═══ 4 · עקרונות ═══════════════════════════ -->
+    <section class="view" data-view="3" role="tabpanel" aria-label="עקרונות מפתח">
+      <div class="stack">
+        <div class="hero" style="background:radial-gradient(130% 100% at 0% 0%,rgba(16,185,129,.18),transparent 62%),linear-gradient(180deg,rgba(22,34,45,.95),rgba(14,22,30,.95))">
+          <span class="label">ארבעה עקרונות ברזל</span>
+          <h2 style="font-family:'Frank Ruhl Libre',serif;font-size:25px;font-weight:900;letter-spacing:-.02em;margin-top:6px">
+            מה שמכריע את התוצאה הוא לא הבחירה — אלא ההתמדה בה.
+          </h2>
+        </div>
+        <div class="stack" id="rules" style="gap:10px"></div>
+        <p class="disclaimer">
+          המסמך מציג תוכנית אישית ואינו מהווה ייעוץ השקעות, שיווק השקעות או ייעוץ מס.
+          כל המספרים הם הדמיה מתמטית של הנחות תשואה שנבחרו כאן — תשואות עבר אינן מבטיחות תשואה עתידית,
+          וההון חשוף להפסד. מיסוי רווחי הון בישראל עומד על 25% ריאלי נכון למועד כתיבת התוכנית.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="tabbar" role="tablist" aria-label="ניווט ראשי">
+    <button class="tab" role="tab" aria-selected="true" data-tab="0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+      <span>הקצאה</span>
+    </button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+      <span>סימולטור</span>
+    </button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+      <span>ביצוע</span>
+    </button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="3">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+      <span>עקרונות</span>
+    </button>
+  </nav>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-hidden="true" aria-label="פירוט אפיק"></aside>
+
+<script>
+(function(){
+'use strict';
+document.documentElement.setAttribute('dir','rtl');
+document.documentElement.setAttribute('lang','he');
+
+/* ── data ─────────────────────────────────────────── */
+var CAPITAL = 1000000;
+var BASE = { core: 0.08, tech: 0.11, cash: 0.04 };
+
+var PILLARS = [
+  { id:'core', name:'עוגן גלובלי', sub:'מדדי מניות עולמיים · MSCI World + S&P 500',
+    amount:650000, pct:65, ret:8, color:'#5D7CFA',
+    details:[
+      { ico:'globe', k:'פיזור', v:'אלפי חברות בעשרות מדינות ובכל הסקטורים. התיק אינו תלוי בחברה בודדת, בענף בודד או במדינה בודדת.' },
+      { ico:'layers', k:'מכשירים', v:'קרנות סל איריות צוברות דיבידנד, נסחרות בשקלים בבורסה בתל אביב — בלי המרות מט״ח ובלי דיווח לרשות המס בארה״ב.' },
+      { ico:'check', k:'יתרון', v:'דחיית מס מלאה עד למועד המימוש, ודמי ניהול אפסיים של 0.05%–0.2% לשנה.' },
+      { ico:'alert', k:'סיכון', v:'תנודתיות של 15%–30% במשברים עולמיים. הירידה זמנית, ההחזקה ארוכה.' }
+    ] },
+  { id:'tech', name:'מנוע צמיחה', sub:'מדד הטכנולוגיה המובילה · Nasdaq 100',
+    amount:250000, pct:25, ret:11, color:'#22D3EE',
+    details:[
+      { ico:'globe', k:'פיזור', v:'‎100 חברות הטכנולוגיה והחדשנות הגדולות בעולם — Apple, Nvidia, Microsoft, Amazon ואחרות.' },
+      { ico:'zap', k:'יתרון', v:'מכפיל תשואה היסטורי עודף על השוק הרחב, מחברות עתירות רווחיות ותזרים מזומנים.' },
+      { ico:'layers', k:'מכשירים', v:'קרן סל אירית עוקבת נאסד״ק 100, צוברת, נסחרת בשקלים.' },
+      { ico:'alert', k:'סיכון', v:'תנודתיות חדה של 35%–50% במשברים או בסביבת ריבית עולה. זה החלק שדורש קיבה חזקה.' }
+    ] },
+  { id:'cash', name:'כרית נזילות',  sub:'קרן כספית שקלית · נזילות יומית',
+    amount:100000, pct:10, ret:4, color:'#10B981',
+    details:[
+      { ico:'zap', k:'נזילות', v:'יומית ומלאה. בלי קנסות, בלי תחנות יציאה, בלי תקופת נעילה.' },
+      { ico:'check', k:'יתרון מיסוי', v:'‎25% מס ריאלי בלבד — מס רק על הרווח שמעבר לעליית מדד המחירים לצרכן.' },
+      { ico:'layers', k:'מכשירים', v:'מק״מ ואג״ח ממשלתי קצר. אותו כלי שבו הבנקים עצמם מחזיקים עודפי מזומן.' },
+      { ico:'alert', k:'סיכון', v:'אפסי מבחינת קרן. הסיכון היחיד הוא שחיקה מול אינפלציה אם מחזיקים כאן יותר מדי, יותר מדי זמן.' }
+    ] }
+];
+
+var STEPS = [
+  { t:'הקמת תשתית וחשבון מסחר', when:'חודש 1', items:[
+    'פתיחת חשבון מסחר עצמאי בבית השקעות ישראלי (מיטב / IBI / אקסלנס) — חיסכון של אלפי שקלים בעמלות ובדמי משמרת מול הבנק.',
+    'הפקדת מלוא 1,000,000 ₪ ורכישה מיידית של קרן כספית שקלית — הכסף צובר ריבית כבר מהיום הראשון.'
+  ]},
+  { t:'פעימת כניסה ראשונית', when:'חודש 1', items:[
+    'רכישת 450,000 ₪ במניות: 325,000 ₪ בעוגן הגלובלי ו-125,000 ₪ בנאסד״ק 100.',
+    'השארת 100,000 ₪ בקרן הכספית ככרית חירום קבועה שלא נוגעים בה.'
+  ]},
+  { t:'פריסה חודשית מתוזמנת · DCA', when:'חודשים 2–7', items:[
+    'מכירה מתוזמנת מהקרן הכספית של 75,000 ₪ בכל חודש, בתאריך קבוע מראש.',
+    'קנייה קבועה בכל חודש: 54,000 ₪ בעוגן הגלובלי + 21,000 ₪ בטכנולוגיה.',
+    'שישה חודשים × 75,000 ₪ — וכל ההון פרוס לפי היעד, בלי לנסות לתזמן את השוק.'
+  ]},
+  { t:'ניהול שוטף ואיזון שנתי', when:'שנים 1–10', items:[
+    'אי-מכירה בעת ירידות שוק. משמעת ברזל, בלי יוצאים מן הכלל.',
+    'בדיקה ואיזון מחדש (Rebalancing) פעם בשנה בלבד, בתאריך קבוע.',
+    'לא לבדוק את התיק כל יום. בדיקה רבעונית מספיקה בהחלט.'
+  ]}
+];
+
+var RULES = [
+  { ico:'shield', color:'#5D7CFA', t:'קרנות איריות צוברות דיבידנד',
+    body:[
+      'קרן צוברת לא מחלקת דיבידנד למשקיע — היא משקיעה אותו מחדש בתוך הקרן, אוטומטית.',
+      'המשמעות: <strong>אין אירוע מס שנתי</strong>. במקום לשלם 25% על כל דיבידנד ולהשקיע מחדש את מה שנשאר, כל השקל עובד הלאה. המס משולם פעם אחת בלבד — ביום המכירה, שנים קדימה.'
+    ],
+    fact:{ b:'25%', s:'מס רווחי הון ריאלי, נדחה עד למועד המימוש' } },
+  { ico:'trend', color:'#F59E0B', t:'הפסיכולוגיה של הירידות',
+    body:[
+      'ירידה של 30% היא לא תקלה בתוכנית — היא חלק מהתוכנית. השוק ירד כך פעם בעשור בערך, ובכל פעם חזר לשיא חדש.',
+      'המשקיע שמוכר בתחתית הופך הפסד על הנייר להפסד אמיתי, ואז מפספס גם את הריבאונד — שמגיע בדרך כלל בשבועות הראשונים ובלי התראה. <strong>המשמעת היא הנכס האמיתי בתיק.</strong>'
+    ],
+    fact:{ b:'0', s:'מספר המכירות המתוכננות בזמן ירידות שוק' } },
+  { ico:'bank', color:'#22D3EE', t:'בנק מול בית השקעות',
+    body:[
+      'ההבדל אינו בשירות — הוא בעלות. דמי משמרת של 0.4% בשנה על תיק של מיליון שקל הם 4,000 ₪ שיוצאים מהתיק כל שנה, בלי קשר לביצועים.',
+      'בבית השקעות עצמאי דמי המשמרת מבוטלים או קבועים ונמוכים. <strong>לאורך עשור, כולל אובדן הריבית דריבית על הכסף שנגרע, הפער מגיע לכ-80,000 ₪</strong> — לפי הנחות התשואה של התוכנית.'
+    ],
+    fact:{ b:'~80,000 ₪', s:'עלות מצטברת משוערת של 0.4% דמי משמרת בעשור' } },
+  { ico:'loan', color:'#10B981', t:'מינוף עתידי · הלוואה כנגד תיק',
+    body:[
+      'כשצריך נזילות גדולה בעתיד, אפשר לקחת הלוואה של עד 30% משווי התיק כנגד הנכסים — בלי למכור אותם.',
+      'היתרון: <strong>אין אירוע מס ואין יציאה מהשוק</strong>. הכסף ממשיך לצבור ריבית דריבית בזמן שההלוואה משרתת את הצורך.',
+      'החיסרון שצריך להכיר: ההלוואה נושאת ריבית, ואם התיק צונח מספיק — בית ההשקעות רשאי לדרוש החזר או להקטין את הפוזיציה. כלי לשעת צורך, לא ברירת מחדל.'
+    ],
+    fact:{ b:'עד 30%', s:'שיעור מינוף אפשרי כנגד שווי התיק, בלי מכירה' } }
+];
+
+/* ── helpers ──────────────────────────────────────── */
+var nis = function(n){
+  return new Intl.NumberFormat('he-IL',{style:'currency',currency:'ILS',maximumFractionDigits:0}).format(Math.round(n));
+};
+var num = function(n){ return new Intl.NumberFormat('he-IL',{maximumFractionDigits:0}).format(Math.round(n)); };
+var short = function(n){
+  n = Math.round(n);
+  var a = Math.abs(n);
+  if(a >= 1e6) return (n/1e6).toFixed(2).replace(/\.?0+$/,'') + ' מ׳';
+  if(a >= 1e3) return Math.round(n/1e3) + ' א׳';
+  return String(n);
+};
+var round1k = function(n){ return Math.round(n/1000)*1000; };
+var $ = function(s,r){ return (r||document).querySelector(s); };
+var el = function(tag,cls,html){
+  var e = document.createElement(tag);
+  if(cls) e.className = cls;
+  if(html != null) e.innerHTML = html;
+  return e;
+};
+
+var ICONS = {
+  globe:'<circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19"/><path d="M12 2.5a15 15 0 0 1 4 9.5 15 15 0 0 1-4 9.5 15 15 0 0 1-4-9.5 15 15 0 0 1 4-9.5z"/>',
+  layers:'<path d="m12 2.5 9.5 5-9.5 5-9.5-5 9.5-5z"/><path d="m2.5 12 9.5 5 9.5-5"/><path d="m2.5 16.8 9.5 5 9.5-5"/>',
+  check:'<circle cx="12" cy="12" r="9.5"/><path d="m8.5 12 2.5 2.5 4.5-5"/>',
+  alert:'<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+  zap:'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+  shield:'<path d="M12 21.5s7.5-3.8 7.5-9.5V5.2L12 2.5 4.5 5.2V12c0 5.7 7.5 9.5 7.5 9.5z"/><path d="m9 12 2 2 4-4"/>',
+  trend:'<polyline points="2 7 8.5 13.5 13.5 8.5 22 17"/><polyline points="22 11 22 17 16 17"/>',
+  bank:'<path d="M3 21h18"/><path d="M4 10h16"/><path d="M5 21V10M10 21V10M14 21V10M19 21V10"/><path d="m12 2 9 5H3l9-5z"/>',
+  loan:'<path d="M17 3v6"/><path d="M14 6h6"/><circle cx="9" cy="9" r="6.5"/><path d="M14.5 14a6.5 6.5 0 1 1-8.6-8.6"/>',
+  chev:'<polyline points="6 9.5 12 15.5 18 9.5"/>',
+  tick:'<polyline points="20 6 9 17 4 12"/>',
+  x:'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  arrow:'<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>'
+};
+var svg = function(key,extra){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" '+
+         'stroke-linecap="round" stroke-linejoin="round"'+(extra||'')+'>'+ICONS[key]+'</svg>';
+};
+
+/* ── tab 1 · legend + pillars ─────────────────────── */
+(function buildOverview(){
+  var legend = $('#legend');
+  var host = $('#pillars');
+
+  PILLARS.forEach(function(p){
+    var row = el('div','legend-row');
+    row.innerHTML =
+      '<i class="chip" style="background:'+p.color+'"></i>' +
+      '<span class="lg-name">'+p.name+'</span>' +
+      '<span class="lg-val">'+p.pct+'% · '+short(p.amount)+'</span>';
+    legend.appendChild(row);
+
+    var v10 = round1k(p.amount * Math.pow(1 + p.ret/100, 10));
+    var card = el('button','pillar');
+    card.type = 'button';
+    card.setAttribute('data-open', p.id);
+    card.innerHTML =
+      '<div class="pillar-top">' +
+        '<div class="pillar-title"><h3>'+p.name+'</h3><p>'+p.sub+'</p></div>' +
+        '<div class="pillar-pct" style="color:'+p.color+'">'+p.pct+'<span>%</span></div>' +
+      '</div>' +
+      '<div class="meter"><i style="width:'+p.pct+'%;background:'+p.color+'"></i></div>' +
+      '<div class="pillar-foot">' +
+        '<span class="amt">'+num(p.amount)+' ₪</span>' +
+        '<span class="tag" style="color:'+p.color+'">'+p.ret+'% לשנה</span>' +
+      '</div>' +
+      '<div class="more">'+svg('arrow',' style="transform:scaleX(-1)"')+'<span>צפי לעשור: '+num(v10)+' ₪ · הקש לפירוט</span></div>';
+    host.appendChild(card);
+  });
+
+  var weighted = PILLARS.reduce(function(s,p){ return s + (p.amount/CAPITAL)*p.ret; }, 0);
+  $('#heroWeighted').textContent = weighted.toFixed(2) + '%';
+})();
+
+/* ── sheet ────────────────────────────────────────── */
+var sheet = $('#sheet'), scrim = $('#scrim'), lastFocus = null;
+
+function openSheet(id){
+  var p = PILLARS.filter(function(x){ return x.id === id; })[0];
+  if(!p) return;
+  var v10 = round1k(p.amount * Math.pow(1 + p.ret/100, 10));
+  var g10 = v10 - p.amount;
+
+  var html =
+    '<div class="handle"></div>' +
+    '<div class="sheet-head">' +
+      '<div style="flex:1;min-width:0">' +
+        '<h2 style="color:'+p.color+'">'+p.name+'</h2>' +
+        '<p>'+p.sub+'</p>' +
+      '</div>' +
+      '<button class="sheet-close" type="button" aria-label="סגירה" data-close>'+svg('x')+'</button>' +
+    '</div>' +
+    '<div class="sheet-stats">' +
+      '<div class="metric"><b>'+short(p.amount)+' ₪</b><span>סכום</span></div>' +
+      '<div class="metric"><b>'+p.pct+'%</b><span>מהתיק</span></div>' +
+      '<div class="metric"><b style="color:'+p.color+'">'+p.ret+'%</b><span>תשואה שנתית</span></div>' +
+    '</div>';
+
+  p.details.forEach(function(d){
+    html += '<div class="detail">' +
+      '<div class="d-ico" style="color:'+(d.ico === 'alert' ? '#F59E0B' : p.color)+'">'+svg(d.ico)+'</div>' +
+      '<div><h4>'+d.k+'</h4><p>'+d.v+'</p></div>' +
+    '</div>';
+  });
+
+  html += '<div class="projection">' +
+      '<span class="label">צפי בעוד 10 שנים</span>' +
+      '<div class="val" style="color:'+p.color+'">'+num(v10)+' ₪</div>' +
+      '<div class="sub">רווח מצטבר של '+num(g10)+' ₪</div>' +
+    '</div>';
+
+  sheet.innerHTML = html;
+  sheet.classList.add('is-on');
+  sheet.setAttribute('aria-hidden','false');
+  scrim.classList.add('is-on');
+  lastFocus = document.activeElement;
+  var closeBtn = sheet.querySelector('[data-close]');
+  if(closeBtn) closeBtn.focus();
+}
+function closeSheet(){
+  sheet.classList.remove('is-on');
+  sheet.setAttribute('aria-hidden','true');
+  scrim.classList.remove('is-on');
+  if(lastFocus && lastFocus.focus) lastFocus.focus();
+}
+scrim.addEventListener('click', closeSheet);
+sheet.addEventListener('click', function(e){ if(e.target.closest('[data-close]')) closeSheet(); });
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeSheet(); });
+document.addEventListener('click', function(e){
+  var t = e.target.closest('[data-open]');
+  if(t) openSheet(t.getAttribute('data-open'));
+});
+
+/* ── tab 2 · simulator ────────────────────────────── */
+var S = { years:10, core:8, tech:11, cash:4 };
+var W = 330, H = 178, PAD = { t:18, r:12, b:26, l:12 };
+
+function valueAt(base, ratePct, t){ return base * Math.pow(1 + ratePct/100, t); }
+function totalAt(t){
+  return valueAt(650000,S.core,t) + valueAt(250000,S.tech,t) + valueAt(100000,S.cash,t);
+}
+
+function drawChart(){
+  var maxV = totalAt(S.years);
+  var yMax = Math.max(maxV * 1.08, CAPITAL * 1.1);
+  var X = function(t){ return PAD.l + (t / S.years) * (W - PAD.l - PAD.r); };
+  var Y = function(v){ return H - PAD.b - (v / yMax) * (H - PAD.t - PAD.b); };
+
+  var N = 72, pts = [], i;
+  for(i = 0; i <= N; i++){
+    var t = (i / N) * S.years;
+    pts.push(X(t).toFixed(2) + ',' + Y(totalAt(t)).toFixed(2));
+  }
+  var line = 'M' + pts.join(' L');
+  var area = line + ' L' + X(S.years).toFixed(2) + ',' + (H - PAD.b) + ' L' + X(0).toFixed(2) + ',' + (H - PAD.b) + ' Z';
+
+  var grid = '';
+  [0.25, 0.5, 0.75].forEach(function(f){
+    var y = (H - PAD.b) - f * (H - PAD.t - PAD.b);
+    grid += '<line class="grid" x1="'+PAD.l+'" y1="'+y.toFixed(1)+'" x2="'+(W-PAD.r)+'" y2="'+y.toFixed(1)+'"/>';
+  });
+
+  var yP = Y(CAPITAL);
+  var endX = X(S.years), endY = Y(maxV);
+  var labelX = Math.min(endX, W - PAD.r - 4);
+
+  $('#chart').innerHTML =
+    '<defs>' +
+      '<linearGradient id="fillGrad" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0%" stop-color="#22D3EE" stop-opacity=".38"/>' +
+        '<stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/>' +
+      '</linearGradient>' +
+      '<linearGradient id="strokeGrad" x1="0" y1="0" x2="1" y2="0">' +
+        '<stop offset="0%" stop-color="#5D7CFA"/><stop offset="100%" stop-color="#22D3EE"/>' +
+      '</linearGradient>' +
+    '</defs>' +
+    grid +
+    '<line class="grid" x1="'+PAD.l+'" y1="'+(H-PAD.b)+'" x2="'+(W-PAD.r)+'" y2="'+(H-PAD.b)+'"/>' +
+    '<path d="'+area+'" fill="url(#fillGrad)"/>' +
+    '<line class="principal" x1="'+PAD.l+'" y1="'+yP.toFixed(1)+'" x2="'+(W-PAD.r)+'" y2="'+yP.toFixed(1)+'"/>' +
+    '<text class="p-label" x="'+(PAD.l+3)+'" y="'+(yP-5).toFixed(1)+'">ההון הראשוני · 1 מ׳</text>' +
+    '<path d="'+line+'" fill="none" stroke="url(#strokeGrad)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<circle cx="'+endX.toFixed(1)+'" cy="'+endY.toFixed(1)+'" r="7" fill="#22D3EE" opacity=".22"/>' +
+    '<circle cx="'+endX.toFixed(1)+'" cy="'+endY.toFixed(1)+'" r="3.6" fill="#0C141B" stroke="#22D3EE" stroke-width="2.4"/>' +
+    '<text class="axis" x="'+labelX.toFixed(1)+'" y="'+Math.max(endY-13,11).toFixed(1)+'" text-anchor="end" ' +
+      'style="fill:#E9F1F7;font-size:11.5px;font-weight:700">'+short(maxV)+' ₪</text>' +
+    '<text class="axis" x="'+X(0)+'" y="'+(H-10)+'" text-anchor="start">היום</text>' +
+    '<text class="axis" x="'+X(S.years)+'" y="'+(H-10)+'" text-anchor="end">שנה '+S.years+'</text>';
+}
+
+function drawSplit(){
+  var parts = [
+    { n:'עוגן', v:valueAt(650000,S.core,S.years), c:'#5D7CFA' },
+    { n:'טכנולוגיה', v:valueAt(250000,S.tech,S.years), c:'#22D3EE' },
+    { n:'כספית', v:valueAt(100000,S.cash,S.years), c:'#10B981' }
+  ];
+  var max = Math.max(parts[0].v, parts[1].v, parts[2].v);
+  var sum = parts[0].v + parts[1].v + parts[2].v;
+  $('#split').innerHTML = parts.map(function(p){
+    return '<div class="split-row">' +
+      '<span class="sr-name">'+p.n+'</span>' +
+      '<span class="split-bar"><i style="width:'+((p.v/max)*100).toFixed(1)+'%;background:'+p.c+'"></i></span>' +
+      '<span class="sr-val" style="color:'+p.c+'">'+short(p.v)+' ₪</span>' +
+    '</div>';
+  }).join('') +
+  '<div class="split-row" style="border-top:1px solid var(--line-soft);padding-top:10px">' +
+    '<span class="sr-name" style="font-weight:700">משקל טכנולוגיה</span>' +
+    '<span class="split-bar" style="opacity:0"></span>' +
+    '<span class="sr-val">'+((parts[1].v/sum)*100).toFixed(1)+'%</span>' +
+  '</div>';
+}
+
+function drawTable(){
+  var years = [1,3,5,7,10,15,20];
+  if(years.indexOf(S.years) === -1) years.push(S.years);
+  years = years.filter(function(y){ return y <= 20; }).sort(function(a,b){ return a-b; });
+
+  $('#milestones').innerHTML = years.map(function(t){
+    var c = valueAt(650000,S.core,t), g = valueAt(250000,S.tech,t), k = valueAt(100000,S.cash,t);
+    var tot = c + g + k;
+    var cls = (t === S.years) ? ' class="is-now"' : '';
+    return '<tr'+cls+'>' +
+      '<td>'+t+'</td>' +
+      '<td>'+short(c)+'</td>' +
+      '<td>'+short(g)+'</td>' +
+      '<td>'+short(k)+'</td>' +
+      '<td class="t-total">'+short(tot)+'</td>' +
+      '<td class="t-gain">+'+short(tot - CAPITAL)+'</td>' +
+    '</tr>';
+  }).join('');
+}
+
+function render(){
+  var tot = totalAt(S.years);
+  var profit = tot - CAPITAL;
+  $('#kpiYears').textContent = S.years;
+  $('#kpiTotal').textContent = num(tot) + ' ₪';
+  $('#kpiProfit').textContent = '+' + num(profit) + ' ₪';
+  $('#kpiMult').textContent = 'פי ' + (tot/CAPITAL).toFixed(2);
+  $('#vYears').textContent = S.years;
+  $('#vCore').textContent = S.core.toFixed(1);
+  $('#vTech').textContent = S.tech.toFixed(1);
+  $('#vCash').textContent = S.cash.toFixed(1);
+  drawChart(); drawSplit(); drawTable();
+}
+
+function paintTrack(input, color){
+  var min = parseFloat(input.min), max = parseFloat(input.max);
+  var pct = ((parseFloat(input.value) - min) / (max - min)) * 100;
+  input.style.setProperty('--track',
+    'linear-gradient(to right,'+color+' 0%,'+color+' '+pct+'%,#1A2731 '+pct+'%,#1A2731 100%)');
+}
+
+[['#sYears','years','#5D7CFA'],['#sCore','core','#5D7CFA'],['#sTech','tech','#22D3EE'],['#sCash','cash','#10B981']]
+.forEach(function(cfg){
+  var input = $(cfg[0]);
+  paintTrack(input, cfg[2]);
+  input.addEventListener('input', function(){
+    S[cfg[1]] = parseFloat(input.value);
+    paintTrack(input, cfg[2]);
+    render();
+  });
+});
+render();
+
+/* ── tab 3 · DCA timeline + stepper ───────────────── */
+(function buildDCA(){
+  var months = [], m;
+  for(m = 0; m <= 7; m++){
+    var core, tech, cash;
+    if(m === 0){ core = 0; tech = 0; cash = 1000000; }
+    else { core = 325000 + (m-1)*54000; tech = 125000 + (m-1)*21000; cash = 1000000 - core - tech; }
+    months.push({ m:m, core:core, tech:tech, cash:cash });
+  }
+  var total = 1000000;
+  $('#dca').innerHTML = months.map(function(x){
+    var bar = function(v,c){
+      if(v <= 0) return '';
+      return '<i style="height:'+(v/total*96).toFixed(1)+'%;background:'+c+'"></i>';
+    };
+    return '<div class="dca-col">' +
+      bar(x.cash,'#10B981') + bar(x.tech,'#22D3EE') + bar(x.core,'#5D7CFA') +
+    '</div>';
+  }).join('');
+  $('#dcaX').innerHTML = months.map(function(x){ return '<span>'+x.m+'</span>'; }).join('');
+})();
+
+var KEY = 'plan-steps-v1';
+var done = {};
+try { done = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch(e){ done = {}; }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(done)); } catch(e){} }
+
+var TOTAL_TASKS = STEPS.reduce(function(s,x){ return s + x.items.length; }, 0);
+
+function updateProgress(){
+  var count = 0, k;
+  for(k in done){ if(done[k]) count++; }
+  $('#progFill').style.width = (count / TOTAL_TASKS * 100) + '%';
+  $('#progText').textContent = count + ' / ' + TOTAL_TASKS;
+  STEPS.forEach(function(step, si){
+    var all = step.items.every(function(_, ii){ return done[si+'-'+ii]; });
+    var node = document.querySelector('.step[data-step="'+si+'"]');
+    if(node) node.classList.toggle('is-done', all);
+  });
+}
+
+(function buildSteps(){
+  var host = $('#steps');
+  STEPS.forEach(function(step, si){
+    var wrap = el('div','step');
+    wrap.setAttribute('data-step', si);
+    var tasks = step.items.map(function(txt, ii){
+      var key = si + '-' + ii;
+      return '<button class="task" type="button" data-task="'+key+'" aria-pressed="'+(done[key] ? 'true' : 'false')+'">' +
+        '<span class="box">'+svg('tick')+'</span>' +
+        '<span class="task-text">'+txt+'</span>' +
+      '</button>';
+    }).join('');
+    wrap.innerHTML =
+      '<div class="step-num">'+(si+1)+'</div>' +
+      '<div class="step-head"><h3>'+step.t+'</h3><span class="when">'+step.when+'</span></div>' +
+      '<div class="tasks">'+tasks+'</div>';
+    host.appendChild(wrap);
+  });
+
+  host.addEventListener('click', function(e){
+    var btn = e.target.closest('[data-task]');
+    if(!btn) return;
+    var key = btn.getAttribute('data-task');
+    done[key] = !done[key];
+    btn.setAttribute('aria-pressed', done[key] ? 'true' : 'false');
+    save();
+    updateProgress();
+  });
+  updateProgress();
+})();
+
+/* ── tab 4 · accordion ────────────────────────────── */
+(function buildRules(){
+  var host = $('#rules');
+  RULES.forEach(function(r, i){
+    var wrap = el('div','acc');
+    var body = r.body.map(function(p){ return '<p>'+p+'</p>'; }).join('');
+    wrap.innerHTML =
+      '<button class="acc-btn" type="button" aria-expanded="false" aria-controls="acc-'+i+'">' +
+        '<span class="acc-icon" style="color:'+r.color+'">'+svg(r.ico)+'</span>' +
+        '<h3>'+r.t+'</h3>' +
+        '<span class="acc-chev">'+svg('chev')+'</span>' +
+      '</button>' +
+      '<div class="acc-body" id="acc-'+i+'"><div class="acc-inner"><div class="acc-pad">' +
+        body +
+        '<div class="fact"><b style="color:'+r.color+'">'+r.fact.b+'</b><span>'+r.fact.s+'</span></div>' +
+      '</div></div></div>';
+    host.appendChild(wrap);
+  });
+
+  host.addEventListener('click', function(e){
+    var btn = e.target.closest('.acc-btn');
+    if(!btn) return;
+    var acc = btn.parentNode;
+    var open = acc.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+
+/* ── navigation ───────────────────────────────────── */
+var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+var views = Array.prototype.slice.call(document.querySelectorAll('.view'));
+var current = 0;
+
+function go(i){
+  if(i < 0 || i >= views.length || i === current) return;
+  current = i;
+  tabs.forEach(function(t, n){ t.setAttribute('aria-selected', n === i ? 'true' : 'false'); });
+  views.forEach(function(v, n){ v.classList.toggle('is-on', n === i); });
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+tabs.forEach(function(t, i){ t.addEventListener('click', function(){ go(i); }); });
+
+var sx = 0, sy = 0, tracking = false;
+var viewsHost = $('#views');
+viewsHost.addEventListener('touchstart', function(e){
+  if(e.target.closest('input[type=range]') || e.target.closest('.table-scroll')) { tracking = false; return; }
+  tracking = true; sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+}, { passive:true });
+viewsHost.addEventListener('touchend', function(e){
+  if(!tracking) return;
+  tracking = false;
+  var dx = e.changedTouches[0].clientX - sx;
+  var dy = e.changedTouches[0].clientY - sy;
+  if(Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.6) return;
+  go(current + (dx < 0 ? 1 : -1));
+}, { passive:true });
+})();
+</script>

@@ -1,0 +1,565 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0A1016">
+<title>מיליון שקל, עשר שנים</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@500;700;900&display=swap">
+
+<style>
+:root{
+  --ground:#0A1016; --surface:#131E28;
+  --line:#22323F; --line-soft:#1A2934;
+  --text:#EDF4F9; --muted:#A7BACA; --faint:#6B8296;
+  --sp:#4F87F5; --tech:#2EDCF2; --reit:#B57BF7; --cash:#20C997;
+  --warn:#F5A524; --red:#F26B6B;
+  --ease:cubic-bezier(.22,.9,.3,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--ground);color:var(--text);
+  font-family:"Assistant","Heebo",system-ui,-apple-system,sans-serif;
+  font-size:17px;line-height:1.65;font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+h1,h2{margin:0;font-weight:700;line-height:1.15;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--tech);outline-offset:4px;border-radius:8px}
+
+.rail{position:fixed;top:0;inset-inline:0;height:3px;background:rgba(255,255,255,.07);z-index:40}
+.rail i{display:block;height:100%;background:linear-gradient(90deg,var(--sp),var(--tech));
+  transition:width .42s var(--ease);border-radius:3px 0 0 3px}
+
+.slide{display:none;flex-direction:column;min-height:100dvh;
+  padding:62px 24px calc(120px + env(safe-area-inset-bottom))}
+.slide.on{display:flex;animation:in .4s var(--ease) both}
+@keyframes in{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}
+.inner{margin:auto;width:100%;max-width:530px;display:flex;flex-direction:column;gap:19px}
+.slide::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(85% 55% at 50% 0%,var(--glow,rgba(79,135,245,.15)),transparent 70%)}
+
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+.h-xl{font-family:"Frank Ruhl Libre",serif;font-weight:900;letter-spacing:-.025em;font-size:clamp(38px,11vw,52px)}
+.h-lg{font-family:"Frank Ruhl Libre",serif;font-weight:900;letter-spacing:-.022em;font-size:clamp(29px,8.2vw,38px)}
+.lead{font-size:17.5px;line-height:1.66;color:var(--muted)}
+.lead strong{color:var(--text);font-weight:600}
+.foot{font-size:13.5px;line-height:1.55;color:var(--faint)}
+.card{background:var(--surface);border:1px solid var(--line-soft);border-radius:19px;padding:17px 18px}
+.viz{width:100%;height:auto;display:block;direction:ltr}
+
+.punch{display:flex;flex-direction:column;gap:5px;padding:15px 17px;border-radius:17px;
+  background:rgba(79,135,245,.11);border:1px solid rgba(79,135,245,.32)}
+.punch .pl{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--sp)}
+.punch p{font-size:16.5px;line-height:1.55;color:var(--text);font-weight:600}
+.punch.g{background:rgba(32,201,151,.10);border-color:rgba(32,201,151,.32)}
+.punch.g .pl{color:var(--cash)}
+.punch.v{background:rgba(181,123,247,.10);border-color:rgba(181,123,247,.32)}
+.punch.v .pl{color:var(--reit)}
+
+.math{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;
+  padding:13px 15px;border-radius:15px;background:rgba(0,0,0,.28);border:1px dashed var(--line);
+  font-size:15.5px;font-weight:600;color:var(--muted);text-align:center}
+.math b{color:var(--text);font-weight:700;white-space:nowrap}
+.math .eq{color:var(--faint);font-weight:400}
+
+.jump{display:flex;align-items:center;gap:15px;flex-wrap:wrap}
+.jump .from{font-family:"Frank Ruhl Libre",serif;font-size:clamp(25px,7vw,31px);font-weight:700;color:var(--faint)}
+.jump .arr svg{width:25px;height:25px;color:var(--faint);display:block}
+.jump .to{font-family:"Frank Ruhl Libre",serif;font-size:clamp(35px,10.2vw,46px);
+  font-weight:900;letter-spacing:-.03em;color:var(--cash)}
+
+.rows{display:flex;flex-direction:column;gap:14px}
+.row{display:flex;gap:14px;align-items:flex-start}
+.row .n{width:30px;height:30px;flex:none;border-radius:50%;display:grid;place-items:center;
+  font-size:14px;font-weight:700;background:rgba(79,135,245,.16);
+  border:1px solid rgba(79,135,245,.36);color:var(--sp)}
+.row .rt{font-size:17px;line-height:1.5;padding-top:2px}
+.row .rt b{font-weight:700}
+.row .rt em{display:block;font-style:normal;font-size:14px;color:var(--faint);margin-top:2px}
+
+.legend{display:flex;flex-direction:column;gap:13px}
+.lrow{display:flex;align-items:center;gap:12px}
+.lrow .dot{width:11px;height:11px;border-radius:4px;flex:none}
+.lrow .ln{flex:1;font-size:16px;font-weight:600;min-width:0}
+.lrow .ln em{display:block;font-style:normal;font-size:13px;color:var(--faint);font-weight:500;margin-top:-2px}
+.lrow .lv{font-size:16px;font-weight:700;white-space:nowrap}
+
+.share{height:9px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}
+.share i{display:block;height:100%;border-radius:99px}
+
+.chain{display:flex;flex-direction:column;gap:8px}
+.link{display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+  padding:14px 17px;border-radius:16px;background:var(--surface);border:1px solid var(--line-soft)}
+.link .lv{font-family:"Frank Ruhl Libre",serif;font-size:26px;font-weight:900;
+  letter-spacing:-.025em;line-height:1.15;white-space:nowrap}
+.link .ld{font-size:15px;line-height:1.5;color:var(--muted)}
+.minus{padding-inline-start:16px;font-size:13.5px;color:var(--faint);font-weight:600}
+
+.pair{display:flex;gap:11px}
+.pair>div{flex:1;background:var(--surface);border:1px solid var(--line-soft);
+  border-radius:16px;padding:14px;text-align:center}
+.pair b{display:block;font-family:"Frank Ruhl Libre",serif;font-size:23px;font-weight:900;
+  letter-spacing:-.02em;line-height:1.15;white-space:nowrap}
+.pair span{display:block;font-size:13px;color:var(--faint);font-weight:600;margin-top:4px}
+
+.scen{display:flex;gap:9px}
+.scen>div{flex:1;background:var(--surface);border:1px solid var(--line-soft);
+  border-radius:16px;padding:13px 10px;text-align:center}
+.scen b{display:block;font-family:"Frank Ruhl Libre",serif;font-size:20px;font-weight:900;
+  letter-spacing:-.02em;line-height:1.1;white-space:nowrap}
+.scen em{display:block;font-style:normal;font-size:13px;color:var(--faint);font-weight:700;margin-top:4px}
+
+.bars{display:flex;align-items:flex-end;gap:5px;height:100px}
+.bcol{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;height:100%}
+.bcol i{display:block;border-radius:2px;flex:none}
+.bx{display:flex;gap:5px;margin-top:8px}
+.bx span{flex:1;text-align:center;font-size:11px;color:var(--faint);font-weight:700}
+.keys{display:flex;gap:13px;flex-wrap:wrap}
+.key{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);font-weight:600}
+.key i{width:10px;height:10px;border-radius:3px;display:block}
+
+.note{display:flex;gap:11px;align-items:flex-start;padding:14px 16px;border-radius:16px;
+  background:rgba(245,165,36,.08);border:1px solid rgba(245,165,36,.26)}
+.note svg{width:19px;height:19px;color:var(--warn);flex:none;margin-top:3px}
+.note p{font-size:15px;line-height:1.55;color:#EAD3A8}
+.note b{color:var(--warn)}
+
+.nav{position:fixed;inset-inline:0;bottom:0;z-index:50;display:flex;align-items:center;gap:11px;
+  max-width:578px;margin-inline:auto;padding:13px 24px calc(17px + env(safe-area-inset-bottom));
+  background:linear-gradient(180deg,transparent,rgba(10,16,22,.93) 34%)}
+.nx{flex:1;display:flex;align-items:center;justify-content:center;gap:9px;min-height:54px;
+  border-radius:16px;font-size:17px;font-weight:700;
+  background:linear-gradient(135deg,var(--sp),#3B6FE0);color:#fff;
+  box-shadow:0 8px 22px rgba(59,111,224,.32);transition:transform .16s var(--ease),filter .16s var(--ease)}
+.nx:hover{filter:brightness(1.08)}
+.nx:active{transform:scale(.97)}
+.nx svg{width:19px;height:19px}
+.pv{width:54px;height:54px;flex:none;border-radius:16px;display:grid;place-items:center;
+  background:var(--surface);border:1px solid var(--line);color:var(--muted);
+  transition:color .16s var(--ease),background .16s var(--ease),opacity .16s var(--ease)}
+.pv:hover{color:var(--text);background:var(--line-soft)}
+.pv[disabled]{opacity:.3;pointer-events:none}
+.pv svg{width:20px;height:20px}
+.count{font-size:13.5px;font-weight:700;color:var(--faint);min-width:48px;text-align:center;direction:ltr}
+
+@media (prefers-reduced-motion:reduce){*,*::before{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+</style>
+
+<div class="rail"><i id="rail" style="width:6%"></i></div>
+<div class="deck" id="deck">
+
+<!-- 1 -->
+<section class="slide on" style="--glow:rgba(79,135,245,.20)">
+  <div class="inner">
+    <span class="eyebrow">תוכנית השקעה</span>
+    <h1 class="h-xl">מיליון שקל,<br>עשר שנים</h1>
+    <p class="lead">איך מחלקים את הכסף, איך נכנסים לשוק, כמה באמת נשאר ביד — ומה יכול להשתבש.</p>
+    <p class="foot">‎18 שקופיות. הקש על ״הבא״ כדי להתקדם.</p>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="slide" style="--glow:rgba(32,201,151,.17)">
+  <div class="inner">
+    <span class="eyebrow">המטרה</span>
+    <div class="jump">
+      <span class="from">1,000,000 ₪</span>
+      <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg></span>
+      <span class="to">2,299,000 ₪</span>
+    </div>
+    <p class="lead">בעוד עשר שנים, בלי להוסיף שקל ובלי לגעת בכסף באמצע. זה בערך <strong>פי 2.30 על הכסף.</strong></p>
+    <div class="math"><span>תשואה של</span><b>8.55% בשנה</b><span class="eq">במשך</span><b>עשר שנים</b></div>
+    <p class="foot">‎8.55% הוא הממוצע המשוקלל של ארבעת הסלים. זו הערכה סבירה לפי ממוצעי העבר, לא הבטחה.</p>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="slide" style="--glow:rgba(79,135,245,.17)">
+  <div class="inner">
+    <span class="eyebrow">הרעיון</span>
+    <h2 class="h-lg">שלוש החלטות,<br>וזהו</h2>
+    <div class="rows">
+      <div class="row"><span class="n">1</span><span class="rt"><b>מחלקים את הכסף לארבעה סלים.</b><em>מניות, טכנולוגיה, נדל״ן וכסף נזיל</em></span></div>
+      <div class="row"><span class="n">2</span><span class="rt"><b>קונים לאט, על פני שבעה חודשים.</b><em>כדי לא להיכנס הכל ביום הכי גרוע</em></span></div>
+      <div class="row"><span class="n">3</span><span class="rt"><b>ולא נוגעים במשך עשור.</b><em>זה החלק הכי קשה, וגם הכי חשוב</em></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="slide" style="--glow:rgba(181,123,247,.16)">
+  <div class="inner">
+    <span class="eyebrow">ארבעת הסלים</span>
+    <svg id="donut" class="viz" viewBox="0 0 180 180" style="max-width:178px;margin-inline:auto" role="img" aria-label="‎50 אחוז מדד אס אנד פי, 20 אחוז טכנולוגיה, 20 אחוז נדלן, 10 אחוז כסף נזיל"></svg>
+    <div class="legend">
+      <div class="lrow"><i class="dot" style="background:var(--sp)"></i><span class="ln">‎500 החברות הגדולות בארה״ב<em>‎8.5% בשנה</em></span><span class="lv" style="color:var(--sp)">500,000 ₪</span></div>
+      <div class="lrow"><i class="dot" style="background:var(--tech)"></i><span class="ln">מניות טכנולוגיה<em>‎11% בשנה</em></span><span class="lv" style="color:var(--tech)">200,000 ₪</span></div>
+      <div class="lrow"><i class="dot" style="background:var(--reit)"></i><span class="ln">נדל״ן מניב<em>‎8.5% בשנה</em></span><span class="lv" style="color:var(--reit)">200,000 ₪</span></div>
+      <div class="lrow"><i class="dot" style="background:var(--cash)"></i><span class="ln">כסף נזיל<em>‎4% בשנה</em></span><span class="lv" style="color:var(--cash)">100,000 ₪</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="slide" style="--glow:rgba(79,135,245,.19)">
+  <div class="inner">
+    <span class="eyebrow">סל 1 · העוגן</span>
+    <h2 class="h-lg" style="color:var(--sp)">500,000 ₪</h2>
+    <div class="share"><i style="width:50%;background:var(--sp)"></i></div>
+    <p class="lead">מדד <strong>S&amp;P 500</strong> — 500 החברות הגדולות בארה״ב, מכל התחומים. זה חצי מהתיק, והחלק הכי יציב בו.</p>
+    <div class="math"><b>500,000 ₪</b><span class="eq">שגדלים ב-8.5% בשנה</span><span class="eq">←</span><b style="color:var(--sp)">1,130,000 ₪</b></div>
+    <div class="note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+      <p>במשבר של 2008 המדד הזה <b>ירד ב-55%</b>, וחזר לעצמו תוך כארבע שנים. ב-2020 ירד ב-34% וחזר תוך חצי שנה.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="slide" style="--glow:rgba(46,220,242,.18)">
+  <div class="inner">
+    <span class="eyebrow">סל 2 · מנוע הצמיחה</span>
+    <h2 class="h-lg" style="color:var(--tech)">200,000 ₪</h2>
+    <div class="share"><i style="width:20%;background:var(--tech)"></i></div>
+    <p class="lead">‎100 חברות הטכנולוגיה הגדולות: אפל, מיקרוסופט, אנבידיה, אמזון. צומח מהר יותר מהשוק — ויורד חזק יותר.</p>
+    <div class="math"><b>200,000 ₪</b><span class="eq">שגדלים ב-11% בשנה</span><span class="eq">←</span><b style="color:var(--tech)">568,000 ₪</b></div>
+    <div class="note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+      <p>בשנת 2000 הסל הזה <b>ירד ב-83%</b>, ולקח לו כ-15 שנה לחזור לעצמו. בדיוק בגלל זה הוא חמישית מהתיק ולא יותר.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="slide" style="--glow:rgba(181,123,247,.19)">
+  <div class="inner">
+    <span class="eyebrow">סל 3 · נדל״ן מניב</span>
+    <h2 class="h-lg" style="color:var(--reit)">200,000 ₪</h2>
+    <div class="share"><i style="width:20%;background:var(--reit)"></i></div>
+    <p class="lead"><strong>קרנות ריט</strong> הן חברות שמחזיקות נדל״ן ומשכירות אותו — מחסנים לוגיסטיים, בנייני מגורים, מרכזים מסחריים ומשרדים. קונים מניה שלהן בבורסה.</p>
+    <p class="lead">נדל״ן <strong>בלי שוכרים, בלי חוזים ובלי משכנתה</strong> — ואפשר למכור תוך יום אחד.</p>
+    <div class="math"><b>200,000 ₪</b><span class="eq">שגדלים ב-8.5% בשנה</span><span class="eq">←</span><b style="color:var(--reit)">452,000 ₪</b></div>
+    <div class="punch v">
+      <span class="pl">מאיפה מגיעה התשואה</span>
+      <p>‎5.5% מדמי השכירות שמתקבלים כדיבידנד, ועוד כ-3% מעליית ערך הנכסים.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="slide" style="--glow:rgba(181,123,247,.15)">
+  <div class="inner">
+    <span class="eyebrow">הדיבידנד מהנדל״ן</span>
+    <h2 class="h-lg">כ-700 ₪ בחודש<br>שחוזרים לתיק</h2>
+    <p class="lead">קרנות הריט מחלקות את דמי השכירות שהן גובות. על 200,000 ₪ זה יוצא בערך <strong>8,000 ₪ בשנה</strong> שנכנסים לחשבון.</p>
+    <p class="lead">את הכסף הזה לא מוציאים — <strong>קונים בו עוד</strong>, פעם או פעמיים בשנה. ככה הוא ממשיך לעבוד.</p>
+    <div class="note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <p>הבדל חשוב: על הדיבידנד הזה <b>משלמים מס כל שנה</b>, בניגוד לשני הסלים הראשונים שדוחים את המס לסוף. זה מקזז חלק מהתשואה בפועל.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="slide" style="--glow:rgba(32,201,151,.17)">
+  <div class="inner">
+    <span class="eyebrow">סל 4 · כסף נזיל</span>
+    <h2 class="h-lg" style="color:var(--cash)">100,000 ₪</h2>
+    <div class="share"><i style="width:10%;background:var(--cash)"></i></div>
+    <p class="lead">קרן כספית — כמו פיקדון בבנק, רק בלי לנעול את הכסף. אפשר למשוך הכל תוך יום עסקים אחד, בלי קנס.</p>
+    <div class="math"><b>100,000 ₪</b><span class="eq">שגדלים ב-4% בשנה</span><span class="eq">←</span><b style="color:var(--cash)">148,000 ₪</b></div>
+    <p class="lead">שני תפקידים: לממן את הקנייה ההדרגתית בשבעת החודשים הראשונים, ואחר כך להישאר ככרית ביטחון.</p>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide" style="--glow:rgba(181,123,247,.15)">
+  <div class="inner">
+    <span class="eyebrow">מה שכדאי לשים לב אליו</span>
+    <h2 class="h-lg">שני הסלים הראשונים<br>קונים אותן חברות</h2>
+    <p class="lead">אפל, מיקרוסופט ואנבידיה נמצאות גם ב-S&amp;P 500 וגם בסל הטכנולוגיה. כשקונים את שניהם — <strong>קונים אותן פעמיים.</strong></p>
+    <div class="card">
+      <p class="foot" style="margin-bottom:12px">מתוך 900,000 ₪ בנכסי הסיכון:</p>
+      <div class="legend">
+        <div class="lrow"><i class="dot" style="background:var(--tech)"></i><span class="ln">בחברות טכנולוגיה</span><span class="lv" style="color:var(--tech)">כ-280,000 ₪</span></div>
+        <div class="lrow"><i class="dot" style="background:var(--sp)"></i><span class="ln">בחברות אמריקאיות</span><span class="lv" style="color:var(--sp)">כ-696,000 ₪</span></div>
+      </div>
+    </div>
+    <div class="punch v">
+      <span class="pl">מה שמאזן את זה</span>
+      <p>הנדל״ן. הוא הרכיב היחיד בתיק שפחות זז יחד עם המניות — ובזכותו התיק מפוזר יותר.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="slide" style="--glow:rgba(245,165,36,.15)">
+  <div class="inner">
+    <span class="eyebrow">מה באמת נשאר ביד</span>
+    <h2 class="h-lg">‎2.3 מיליון<br>זה לא 2.3 מיליון</h2>
+    <div class="chain">
+      <div class="link"><span class="lv">2,299,000 ₪</span><span class="ld">זה מה שיהיה בחשבון בעוד עשר שנים</span></div>
+      <div class="minus">אבל המחירים יעלו בינתיים — כ-2.5% בשנה</div>
+      <div class="link"><span class="lv" style="color:var(--warn)">1,796,000 ₪</span><span class="ld">זה מה ששווה הסכום הזה בכסף של היום</span></div>
+      <div class="minus">ומהרווח צריך לשלם 25% מס</div>
+      <div class="link" style="border-color:rgba(32,201,151,.4)"><span class="lv" style="color:var(--cash)">1,597,000 ₪</span><span class="ld">זה מה שבאמת נשאר ביד, בכסף של היום</span></div>
+    </div>
+    <div class="punch g">
+      <span class="pl">בשורה התחתונה</span>
+      <p>פי 1.60 על הכסף, לא פי 2.30. עדיין טוב מאוד — אבל זה המספר שצריך להשוות מולו כל אלטרנטיבה.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="slide" style="--glow:rgba(79,135,245,.15)">
+  <div class="inner">
+    <span class="eyebrow">טווח אפשרויות</span>
+    <h2 class="h-lg">זה לא מספר אחד,<br>זה טווח</h2>
+    <svg id="curve" class="viz" viewBox="0 0 330 168" role="img" aria-label="שלוש עקומות: תרחיש חלש, ממוצע וחזק"></svg>
+    <div class="scen">
+      <div><b>2.80 מ׳</b><em>שוק חזק</em></div>
+      <div style="border-color:rgba(32,201,151,.4)"><b style="color:var(--cash)">2.30 מ׳</b><em>ממוצע</em></div>
+      <div><b>1.63 מ׳</b><em>שוק חלש</em></div>
+    </div>
+    <p class="lead">וגם הקווים האלה חלקים מדי. במציאות שנה אחת תעלה ב-25% והבאה תרד ב-15%. <strong>הממוצע הוא היעד, לא הדרך.</strong></p>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="slide" style="--glow:rgba(245,165,36,.14)">
+  <div class="inner">
+    <span class="eyebrow">איך נכנסים</span>
+    <h2 class="h-lg">לא הכל<br>ביום אחד</h2>
+    <p class="lead">אף אחד לא יודע אם מחר השוק יעלה או ירד. אז במקום להמר על יום אחד — קונים בפעימות, על פני שבעה חודשים.</p>
+    <div class="note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <p>להיות הוגנים: <b>כניסה בבת אחת מרוויחה יותר ברוב המקרים</b>, פשוט כי השוק עולה יותר ימים משהוא יורד. הפריסה עולה לנו קצת תשואה.</p>
+    </div>
+    <div class="punch">
+      <span class="pl">אז למה בכל זאת</span>
+      <p>כי אם ניכנס עם הכל שבועיים לפני נפילה של 30%, הסיכוי שנימכר בפאניקה גדול — וזה יעלה הרבה יותר.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="slide" style="--glow:rgba(46,220,242,.15)">
+  <div class="inner">
+    <span class="eyebrow">לוח הקניות</span>
+    <h2 class="h-lg">שבעה חודשים</h2>
+    <div class="card">
+      <div class="keys" style="margin-bottom:13px">
+        <span class="key"><i style="background:var(--cash)"></i>כסף נזיל</span>
+        <span class="key"><i style="background:var(--reit)"></i>נדל״ן</span>
+        <span class="key"><i style="background:var(--tech)"></i>טכנולוגיה</span>
+        <span class="key"><i style="background:var(--sp)"></i>‎S&amp;P 500</span>
+      </div>
+      <div class="bars" id="bars" dir="ltr"></div>
+      <div class="bx" id="barsX" dir="ltr"></div>
+      <p class="foot" style="text-align:center;margin-top:8px">חודש</p>
+    </div>
+    <div class="pair">
+      <div><b>450,000 ₪</b><span>בחודש הראשון</span></div>
+      <div><b>75,000 ₪</b><span>בכל חודש אחריו</span></div>
+    </div>
+    <p class="foot">כל חודש מתחלק ל-41,600 ₪ ל-S&amp;P, 16,700 ₪ לטכנולוגיה ו-16,700 ₪ לנדל״ן. נשארים 100,000 ₪ ככרית קבועה.</p>
+  </div>
+</section>
+
+<!-- 15 -->
+<section class="slide" style="--glow:rgba(245,165,36,.15)">
+  <div class="inner">
+    <span class="eyebrow">איפה מנהלים את זה</span>
+    <h2 class="h-lg">בית השקעות,<br>לא בנק</h2>
+    <p class="lead">הבנק גובה <strong>דמי משמרת</strong> — תשלום שנתי רק על זה שהכסף יושב אצלו. בבית השקעות עצמאי זה מבוטל או זניח.</p>
+    <div class="math"><b>0.4%</b><span class="eq">מתוך</span><b>1,000,000 ₪</b><span class="eq">=</span><b style="color:var(--warn)">4,000 ₪ בשנה</b></div>
+    <div class="punch">
+      <span class="pl">ולאורך עשור</span>
+      <p>כ-82,000 ₪. לא רק ה-40,000 שנגבו, אלא גם הרווח שהכסף הזה היה מייצר אילו נשאר בתיק.</p>
+    </div>
+    <p class="foot">העמלות ניתנות למשא ומתן, במיוחד בהיקף כזה. שווה לבקש הצעות משלושה גופים ולהשוות.</p>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide" style="--glow:rgba(79,135,245,.15)">
+  <div class="inner">
+    <span class="eyebrow">מיסים</span>
+    <h2 class="h-lg">משלמים פעם אחת,<br>בסוף</h2>
+    <p class="lead">שני הסלים הראשונים נקנים כקרנות <strong>״צוברות״</strong>. במקום לחלק לנו דיבידנד כל שנה — ולשלם עליו 25% מס מיד — הקרן משקיעה אותו בחזרה בעצמה.</p>
+    <p class="lead">התוצאה: כל שקל ממשיך לעבוד בלי הפסקה, והמס משולם רק ביום שבאמת מוכרים.</p>
+    <div class="note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <p>מזה נגזר גם כלל פשוט: <b>כל מכירה היא אירוע מס.</b> לכן לא מוכרים כדי ״לסדר״ את התיק — נוגעים בו רק אם משהו זז ממש הרבה.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 17 -->
+<section class="slide" style="--glow:rgba(245,165,36,.16)">
+  <div class="inner">
+    <span class="eyebrow">הכלל היחיד שחייבים</span>
+    <h2 class="h-lg">לא מוכרים<br>כשיורד</h2>
+    <svg id="dip" class="viz" viewBox="0 0 330 150" role="img" aria-label="גרף שוק שעולה, יורד חזק באמצע, וממשיך לשיא חדש"></svg>
+    <p class="lead">בערך פעם בעשור השוק יורד בין 30% ל-50%. זה קרה תמיד, וזה יקרה שוב באמצע העשור הזה.</p>
+    <div class="punch g">
+      <span class="pl">למה זה קריטי</span>
+      <p>מי שמוכר בירידה הופך הפסד על הנייר להפסד אמיתי — ואז מפספס גם את העלייה בחזרה, שמגיעה בלי התראה.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 18 -->
+<section class="slide" style="--glow:rgba(32,201,151,.17)">
+  <div class="inner">
+    <span class="eyebrow">סיכום</span>
+    <h2 class="h-lg">מה עושים עכשיו</h2>
+    <div class="rows">
+      <div class="row"><span class="n">1</span><span class="rt"><b>מבקשים הצעות משלושה בתי השקעות</b><em>לפני הכל · משווים עמלות</em></span></div>
+      <div class="row"><span class="n">2</span><span class="rt"><b>פותחים חשבון ומפקידים</b><em>חודש ראשון</em></span></div>
+      <div class="row"><span class="n">3</span><span class="rt"><b>קונים בפעימות</b><em>חודשים 1 עד 7</em></span></div>
+      <div class="row"><span class="n">4</span><span class="rt"><b>משקיעים את הדיבידנד ובודקים פעם בשנה</b><em>עשר שנים</em></span></div>
+    </div>
+    <p class="foot" style="margin-top:8px">
+      המספרים הם הערכה לפי ממוצעי העבר, לא הבטחה — השוק יכול גם לרדת, וההון חשוף להפסד.
+      שיעורי המס ונתוני המדדים נכונים למועד הכנת התוכנית ויש לאמת אותם לפני ביצוע.
+      זו תוכנית אישית ואינה ייעוץ השקעות או ייעוץ מס.
+    </p>
+  </div>
+</section>
+
+</div>
+
+<nav class="nav">
+  <button class="pv" id="prev" type="button" aria-label="שקופית קודמת">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+  </button>
+  <span class="count" id="count">1 / 18</span>
+  <button class="nx" id="next" type="button">
+    <span>הבא</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+  </button>
+</nav>
+
+<script>
+(function(){
+'use strict';
+document.documentElement.setAttribute('dir','rtl');
+document.documentElement.setAttribute('lang','he');
+
+var MIX=[
+  {amt:500000, r:.085, c:'#4F87F5'},
+  {amt:200000, r:.11,  c:'#2EDCF2'},
+  {amt:200000, r:.085, c:'#B57BF7'},
+  {amt:100000, r:.04,  c:'#20C997'}
+];
+
+/* donut */
+(function(){
+  var R=65, C=2*Math.PI*R, gap=3, off=0, rings='';
+  MIX.forEach(function(s){
+    var len=C*(s.amt/1e6);
+    rings+='<circle cx="90" cy="90" r="'+R+'" fill="none" stroke="'+s.c+'" stroke-width="19" '+
+      'stroke-dasharray="'+(len-gap).toFixed(2)+' '+(C-len+gap).toFixed(2)+'" '+
+      'stroke-dashoffset="'+(-off).toFixed(2)+'"/>';
+    off+=len;
+  });
+  document.getElementById('donut').innerHTML=
+    '<g transform="rotate(-90 90 90)"><circle cx="90" cy="90" r="'+R+'" fill="none" stroke="#131E28" stroke-width="19"/>'+rings+'</g>'+
+    '<text x="90" y="86" text-anchor="middle" fill="#EDF4F9" style="font-family:\'Frank Ruhl Libre\',serif;font-size:24px;font-weight:900">1,000,000</text>'+
+    '<text x="90" y="106" text-anchor="middle" fill="#6B8296" style="font-family:Assistant,sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em">שקלים</text>';
+})();
+
+/* DCA bars: month 1 seeds 450k, then 75k/month for six months */
+(function(){
+  var cols='', xs='', m;
+  for(m=1;m<=7;m++){
+    var sp=250000+(m-1)*41600, tk=100000+(m-1)*16700, rt=100000+(m-1)*16700;
+    var cash=1000000-sp-tk-rt;
+    var bar=function(v,c){ return v<=0?'':'<i style="height:'+(v/1e6*96).toFixed(1)+'%;background:'+c+'"></i>'; };
+    cols+='<div class="bcol">'+bar(cash,'#20C997')+bar(rt,'#B57BF7')+bar(tk,'#2EDCF2')+bar(sp,'#4F87F5')+'</div>';
+    xs+='<span>'+m+'</span>';
+  }
+  document.getElementById('bars').innerHTML=cols;
+  document.getElementById('barsX').innerHTML=xs;
+})();
+
+/* three scenarios */
+(function(){
+  var W=330,H=168,P={t:16,r:14,b:26,l:14};
+  var S=[
+    {r:[.05,.06,.05,.03], c:'#6B8296', w:1.8, d:'3 3'},
+    {r:[.105,.14,.105,.05], c:'#4F87F5', w:1.8, d:'3 3'},
+    {r:[.085,.11,.085,.04], c:'#20C997', w:3.2, d:''}
+  ];
+  var tot=function(r,t){
+    var s=0,i;
+    for(i=0;i<4;i++) s+=MIX[i].amt*Math.pow(1+r[i],t);
+    return s;
+  };
+  var yMax=tot(S[1].r,10)*1.06;
+  var X=function(t){ return P.l+(t/10)*(W-P.l-P.r); };
+  var Y=function(v){ return H-P.b-(v/yMax)*(H-P.t-P.b); };
+  var out='<line x1="'+P.l+'" y1="'+(H-P.b)+'" x2="'+(W-P.r)+'" y2="'+(H-P.b)+'" stroke="#1A2934"/>';
+  S.forEach(function(s){
+    var pts=[],i;
+    for(i=0;i<=60;i++){ var t=i/60*10; pts.push(X(t).toFixed(1)+','+Y(tot(s.r,t)).toFixed(1)); }
+    out+='<path d="M'+pts.join(' L')+'" fill="none" stroke="'+s.c+'" stroke-width="'+s.w+'" '+
+      (s.d?'stroke-dasharray="'+s.d+'" ':'')+'stroke-linecap="round"/>'+
+      '<circle cx="'+X(10).toFixed(1)+'" cy="'+Y(tot(s.r,10)).toFixed(1)+'" r="'+(s.w>2?4.5:3)+'" fill="'+s.c+'"/>';
+  });
+  out+='<text x="'+X(0)+'" y="'+(H-8)+'" fill="#6B8296" text-anchor="start" style="font-family:Assistant,sans-serif;font-size:11px;font-weight:700">היום</text>'+
+    '<text x="'+X(10)+'" y="'+(H-8)+'" fill="#6B8296" text-anchor="end" style="font-family:Assistant,sans-serif;font-size:11px;font-weight:700">בעוד 10 שנים</text>';
+  document.getElementById('curve').innerHTML=out;
+})();
+
+/* dip illustration */
+(function(){
+  var d='M14,114 L44,102 L72,107 L100,80 L122,70 L140,96 L158,122 L178,110 L206,82 L236,68 L266,44 L316,22';
+  document.getElementById('dip').innerHTML=
+    '<line x1="158" y1="28" x2="158" y2="130" stroke="#F5A524" stroke-width="1" stroke-dasharray="3 4" opacity=".5"/>'+
+    '<path d="'+d+'" fill="none" stroke="#20C997" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>'+
+    '<circle cx="158" cy="122" r="6" fill="#F5A524"/>'+
+    '<text x="150" y="144" fill="#F5A524" text-anchor="middle" style="font-family:Assistant,sans-serif;font-size:12px;font-weight:700">כאן רוב האנשים מוכרים</text>'+
+    '<text x="316" y="14" fill="#20C997" text-anchor="end" style="font-family:Assistant,sans-serif;font-size:12px;font-weight:700">שיא חדש</text>';
+})();
+
+/* navigation */
+var slides=[].slice.call(document.querySelectorAll('.slide')), N=slides.length, i=0;
+var rail=document.getElementById('rail'), count=document.getElementById('count');
+var prev=document.getElementById('prev'), next=document.getElementById('next');
+function show(n){
+  if(n<0||n>N-1) return;
+  i=n;
+  slides.forEach(function(s,k){ s.classList.toggle('on',k===i); });
+  rail.style.width=((i+1)/N*100).toFixed(1)+'%';
+  count.textContent=(i+1)+' / '+N;
+  prev.disabled=(i===0);
+  next.querySelector('span').textContent=(i===N-1)?'מהתחלה':'הבא';
+  window.scrollTo(0,0);
+}
+next.addEventListener('click',function(){ show(i===N-1?0:i+1); });
+prev.addEventListener('click',function(){ show(i-1); });
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowLeft'||e.key===' '||e.key==='PageDown'){ e.preventDefault(); show(i+1); }
+  if(e.key==='ArrowRight'||e.key==='PageUp'){ e.preventDefault(); show(i-1); }
+});
+var sx=0,sy=0,live=false;
+document.addEventListener('touchstart',function(e){
+  if(e.target.closest('.nav')){ live=false; return; }
+  live=true; sx=e.touches[0].clientX; sy=e.touches[0].clientY;
+},{passive:true});
+document.addEventListener('touchend',function(e){
+  if(!live) return;
+  live=false;
+  var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+  if(Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.5) return;
+  show(dx<0?i+1:i-1);
+},{passive:true});
+show(0);
+})();
+</script>
