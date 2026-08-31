@@ -6,11 +6,14 @@
 <meta http-equiv="refresh" content="0; url=deck.html">
 <link rel="canonical" href="deck.html">
 <title>מיליון שקל, עשר שנים</title>
+<meta name="color-scheme" content="dark light">
 <style>
+  :root{color-scheme:dark light;--bg:#0A1016;--fg:#EDF4F9;--link:#4F87F5}
+  @media (prefers-color-scheme:light){:root{--bg:#F3F6FA;--fg:#101D29;--link:#2A63DE}}
   body{margin:0;min-height:100dvh;display:grid;place-items:center;
-    background:#0A1016;color:#EDF4F9;
+    background:var(--bg);color:var(--fg);
     font-family:"Assistant",system-ui,-apple-system,sans-serif;text-align:center;padding:24px}
-  a{color:#4F87F5;font-weight:600}
+  a{color:var(--link);font-weight:600}
 </style>
 </head>
 <body>
