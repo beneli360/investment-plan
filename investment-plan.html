@@ -248,6 +248,16 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.12)}
 .chart .principal{stroke:var(--warn);stroke-width:1.2;stroke-dasharray:4 4;opacity:.7}
 .chart .p-label{fill:var(--warn);font-size:9px;font-weight:700;font-family:"Assistant",sans-serif;opacity:.9}
 
+/* ── reinvest toggle ─────────────────────────────── */
+.switch{position:relative;display:inline-block;flex:none}
+.switch input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.switch i{display:block;width:44px;height:26px;border-radius:99px;background:#1A2731;
+  border:1px solid var(--line);transition:background .2s var(--ease),border-color .2s var(--ease);position:relative}
+.switch i::after{content:"";position:absolute;top:2px;inset-inline-start:2px;width:20px;height:20px;
+  border-radius:50%;background:#8A9BAB;transition:transform .2s var(--ease),background .2s var(--ease)}
+.switch input:checked+i{background:rgba(139,92,246,.35);border-color:rgba(139,92,246,.6)}
+.switch input:checked+i::after{background:#8B5CF6;transform:translateX(-18px)}
+
 /* ── table ───────────────────────────────────────── */
 .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-inline:-4px;padding-inline:4px}
 table{border-collapse:collapse;width:100%;font-size:12px}
@@ -358,8 +368,8 @@ tbody tr.is-now td:first-child{box-shadow:inset 3px 0 0 var(--core)}
 .tabbar{
   position:fixed;inset-inline:0;bottom:0;z-index:40;
   max-width:var(--shell);margin-inline:auto;
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:2px;padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:2px;padding:8px 6px calc(8px + env(safe-area-inset-bottom));
   background:rgba(9,14,20,.82);
   backdrop-filter:blur(20px) saturate(140%);
   -webkit-backdrop-filter:blur(20px) saturate(140%);
@@ -437,7 +447,7 @@ tbody tr.is-now td:first-child{box-shadow:inset 3px 0 0 var(--core)}
     </div>
     <div class="stamp">
       <b id="stampVal">1,000,000 ₪</b>
-      <span>אופק 7–10 שנים</span>
+      <span>+ הפקדות · אופק 10 שנים</span>
     </div>
   </header>
 
@@ -450,24 +460,27 @@ tbody tr.is-now td:first-child{box-shadow:inset 3px 0 0 var(--core)}
         <div class="hero">
           <span class="label">הון להשקעה</span>
           <div class="figure" id="heroFigure">1,000,000<small>₪</small></div>
+          <span class="label" style="margin-top:6px;letter-spacing:.04em;text-transform:none;color:#F59E0B">+ הפקדה חודשית שמתחילה ב-500 ₪ וגדלה ב-250 ₪ בכל שנה</span>
           <div class="hero-meta">
-            <div class="metric"><b id="heroWeighted">8.35%</b><span>תשואה משוקללת</span></div>
-            <div class="metric"><b>7–10</b><span>שנות אופק</span></div>
-            <div class="metric"><b>3</b><span>אפיקים</span></div>
+            <div class="metric"><b id="heroWeighted">8.55%</b><span>תשואה משוקללת</span></div>
+            <div class="metric"><b>2.57 מ׳</b><span>יעד לעשור</span></div>
+            <div class="metric"><b>4</b><span>אפיקים</span></div>
           </div>
         </div>
 
         <div class="card">
           <div class="donut-wrap">
-            <svg class="donut" viewBox="0 0 140 140" role="img" aria-label="פילוח התיק: 65% עוגן גלובלי, 25% טכנולוגיה, 10% קרן כספית">
+            <svg class="donut" viewBox="0 0 140 140" role="img" aria-label="פילוח התיק: 50% עוגן S&P 500, 20% טכנולוגיה, 20% נדל״ן מניב, 10% קרן כספית">
               <g transform="rotate(-90 70 70)" fill="none" stroke-linecap="butt">
                 <circle cx="70" cy="70" r="54" stroke="#0A1219" stroke-width="15"></circle>
                 <circle class="seg" data-open="core" cx="70" cy="70" r="54" stroke="#5D7CFA" stroke-width="15"
-                        stroke-dasharray="218.5 120.8" stroke-dashoffset="0"></circle>
+                        stroke-dasharray="167.65 171.64" stroke-dashoffset="0"></circle>
                 <circle class="seg" data-open="tech" cx="70" cy="70" r="54" stroke="#22D3EE" stroke-width="15"
-                        stroke-dasharray="82.8 256.5" stroke-dashoffset="-220.5"></circle>
+                        stroke-dasharray="65.86 273.43" stroke-dashoffset="-169.65"></circle>
+                <circle class="seg" data-open="reit" cx="70" cy="70" r="54" stroke="#8B5CF6" stroke-width="15"
+                        stroke-dasharray="65.86 273.43" stroke-dashoffset="-237.51"></circle>
                 <circle class="seg" data-open="cash" cx="70" cy="70" r="54" stroke="#10B981" stroke-width="15"
-                        stroke-dasharray="31.9 307.4" stroke-dashoffset="-305.4"></circle>
+                        stroke-dasharray="31.93 307.36" stroke-dashoffset="-305.37"></circle>
               </g>
               <text class="hole-a" x="70" y="68" text-anchor="middle">1.00 מ׳</text>
               <text class="hole-b" x="70" y="82" text-anchor="middle">שקלים</text>
@@ -476,12 +489,12 @@ tbody tr.is-now td:first-child{box-shadow:inset 3px 0 0 var(--core)}
           </div>
         </div>
 
-        <div class="eyebrow">שלושת האפיקים</div>
+        <div class="eyebrow">ארבעת האפיקים</div>
         <div class="stack" id="pillars"></div>
 
         <div class="note">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-          <p>התיק כולו <b>נזיל</b> — שוק הון וקרן כספית בלבד. אין נדל״ן, אין נעילות ואין תחנות יציאה. אפשר לממש כל חלק ממנו תוך יום מסחר אחד.</p>
+          <p>התיק כולו <b>נזיל</b> — קרנות סל, קרנות ריט וקרן כספית, הכול סחיר בבורסה. גם הנדל״ן כאן הוא נייר סחיר: בלי נכס פיזי, בלי משכנתה ובלי נעילות. אפשר לממש כל חלק תוך יום מסחר אחד.</p>
         </div>
 
       </div>
@@ -493,10 +506,11 @@ tbody tr.is-now td:first-child{box-shadow:inset 3px 0 0 var(--core)}
 
         <div class="kpi">
           <span class="label">שווי התיק בעוד <b id="kpiYears">10</b> שנים</span>
-          <div class="big" id="kpiTotal">2,261,000 ₪</div>
+          <div class="big" id="kpiTotal">2,571,000 ₪</div>
           <div class="kpi-row">
-            <div class="metric"><b class="gain" id="kpiProfit">+1,261,000</b><span>רווח מריבית דריבית</span></div>
-            <div class="metric"><b id="kpiMult">פי 2.26</b><span>על הכסף</span></div>
+            <div class="metric"><b id="kpiDeposited">1,195,000</b><span>מהכיס · הון + הפקדות</span></div>
+            <div class="metric"><b class="gain" id="kpiProfit">+1,376,000</b><span>רווח ריבית דריבית</span></div>
+            <div class="metric"><b id="kpiMult">פי 2.15</b><span>על הכסף</span></div>
           </div>
         </div>
 
@@ -512,33 +526,36 @@ tbody tr.is-now td:first-child{box-shadow:inset 3px 0 0 var(--core)}
                 <label for="sYears">אופק ההשקעה</label>
                 <span class="ctrl-val"><span id="vYears">10</span><em>שנים</em></span>
               </div>
-              <input type="range" id="sYears" min="1" max="20" step="1" value="10">
-              <div class="scale"><span>1</span><span>20</span></div>
+              <input type="range" id="sYears" min="1" max="15" step="1" value="10">
+              <div class="scale"><span>1</span><span>15</span></div>
             </div>
-            <div class="ctrl" style="--accent:#5D7CFA">
+            <div class="ctrl" style="--accent:#F59E0B">
               <div class="ctrl-head">
-                <label for="sCore">תשואת עוגן גלובלי</label>
-                <span class="ctrl-val"><span id="vCore">8.0</span><em>%</em></span>
+                <label for="sDep0">הפקדה חודשית ראשונית</label>
+                <span class="ctrl-val"><span id="vDep0">500</span><em>₪</em></span>
               </div>
-              <input type="range" id="sCore" min="4" max="12" step="0.5" value="8">
-              <div class="scale"><span>4%</span><span>12%</span></div>
+              <input type="range" id="sDep0" min="0" max="2000" step="50" value="500">
+              <div class="scale"><span>0</span><span>2,000 ₪</span></div>
             </div>
-            <div class="ctrl" style="--accent:#22D3EE">
+            <div class="ctrl" style="--accent:#F59E0B">
               <div class="ctrl-head">
-                <label for="sTech">תשואת טכנולוגיה</label>
-                <span class="ctrl-val"><span id="vTech">11.0</span><em>%</em></span>
+                <label for="sDepStep">גידול שנתי בהפקדה</label>
+                <span class="ctrl-val"><span id="vDepStep">250</span><em>₪</em></span>
               </div>
-              <input type="range" id="sTech" min="6" max="16" step="0.5" value="11">
-              <div class="scale"><span>6%</span><span>16%</span></div>
+              <input type="range" id="sDepStep" min="0" max="500" step="50" value="250">
+              <div class="scale"><span>0</span><span>500 ₪</span></div>
             </div>
-            <div class="ctrl" style="--accent:#10B981">
+            <div class="ctrl" style="--accent:#8B5CF6">
               <div class="ctrl-head">
-                <label for="sCash">תשואת קרן כספית</label>
-                <span class="ctrl-val"><span id="vCash">4.0</span><em>%</em></span>
+                <label for="tReinvest">השקעה חוזרת של דיבידנד הנדל״ן</label>
+                <label class="switch"><input type="checkbox" id="tReinvest" checked><i></i></label>
               </div>
-              <input type="range" id="sCash" min="1" max="6" step="0.5" value="4">
-              <div class="scale"><span>1%</span><span>6%</span></div>
+              <p style="font-size:11.5px;color:var(--faint);margin-top:6px">בכיבוי — הדיבידנד (כ-5.5%) נמשך לחשבון ואינו נספר בתיק; הריט צומח 3% בלבד.</p>
             </div>
+            <p style="font-size:11.5px;color:var(--faint);margin-top:12px;border-top:1px solid var(--line-soft);padding-top:10px">
+              תשואות המודל קבועות לפי התוכנית: ‎S&P 500 · 8.5% | טכנולוגיה · 11% | נדל״ן · 8.5% | כספית · 4%.
+              ההפקדה החודשית מתחלקת לפי הרוטציה: מחצית לעוגן, רבע לנדל״ן ורבע לטכנולוגיה.
+            </p>
           </div>
         </div>
 
@@ -553,7 +570,7 @@ tbody tr.is-now td:first-child{box-shadow:inset 3px 0 0 var(--core)}
             <table>
               <thead>
                 <tr>
-                  <th>שנה</th><th>עוגן</th><th>טכנולוגיה</th><th>כספית</th><th>סה״כ</th><th>רווח</th>
+                  <th>שנה</th><th>מהכיס</th><th>שווי תיק</th><th>רווח</th><th>מכפיל</th>
                 </tr>
               </thead>
               <tbody id="milestones"></tbody>
@@ -569,8 +586,54 @@ tbody tr.is-now td:first-child{box-shadow:inset 3px 0 0 var(--core)}
       </div>
     </section>
 
-    <!-- ═══ 3 · תוכנית פעולה ══════════════════════ -->
-    <section class="view" data-view="2" role="tabpanel" aria-label="תוכנית פעולה">
+    <!-- ═══ 3 · הפקדות ורוטציה ════════════════════ -->
+    <section class="view" data-view="2" role="tabpanel" aria-label="הפקדה חודשית ורוטציה">
+      <div class="stack">
+
+        <div class="hero" style="background:radial-gradient(130% 100% at 100% 0%,rgba(245,158,11,.16),transparent 62%),linear-gradient(180deg,rgba(22,34,45,.95),rgba(14,22,30,.95))">
+          <span class="label">תוכנית ההפקדה החודשית</span>
+          <h2 style="font-family:'Frank Ruhl Libre',serif;font-size:25px;font-weight:900;letter-spacing:-.02em;margin-top:6px">
+            מתחילים ב-500 ₪ בחודש, מוסיפים 250 ₪ בכל ינואר.
+          </h2>
+        </div>
+
+        <div class="card">
+          <div class="eyebrow" style="margin-top:0">💡 הבעיה · עמלות מינימום</div>
+          <p style="font-size:13.5px;line-height:1.7;color:var(--muted);margin-top:10px">
+            פיצול של 500 ₪ בין שלוש קרנות מייצר <b style="color:#F59E0B">שלוש עמלות מינימום — כ-15 ₪</b>,
+            שהם כ-3% מההפקדה שנשחקים מיד, עוד לפני שהכסף התחיל לעבוד.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="eyebrow" style="margin-top:0">🔄 הפתרון · קנייה ברוטציה — נייר אחד בחודש</div>
+          <div class="stack" id="rotation" style="gap:8px;margin-top:12px"></div>
+          <p style="font-size:12.5px;line-height:1.65;color:var(--muted);margin-top:12px">
+            עמלת מינימום אחת בלבד בכל חודש, ועל פני השנה היחסים נשמרים —
+            מחצית לעוגן, רבע לנדל״ן ורבע לטכנולוגיה. כרית הכספית נשארת קבועה.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="eyebrow" style="margin-top:0">📅 לוח ההפקדות · שנים 1–10</div>
+          <div class="table-scroll" style="margin-top:10px">
+            <table>
+              <thead><tr><th>שנה</th><th>חודשי</th><th>שנתי</th><th>מצטבר</th></tr></thead>
+              <tbody id="depTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          <p><b>195,000 ₪</b> מהכיס לאורך העשור שווים <b>כ-273,000 ₪</b> בשנת היעד לפי הנחות התוכנית — ומעלים את היעד מכ-2.30 לכ-2.57 מיליון ₪.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ 4 · תוכנית פעולה ══════════════════════ -->
+    <section class="view" data-view="3" role="tabpanel" aria-label="תוכנית פעולה">
       <div class="stack">
 
         <div class="card">
@@ -586,6 +649,7 @@ tbody tr.is-now td:first-child{box-shadow:inset 3px 0 0 var(--core)}
           <div class="legend" style="flex-direction:row;gap:14px;margin-top:12px">
             <div class="legend-row" style="gap:6px"><i class="chip" style="background:#5D7CFA"></i><span class="lg-val">עוגן</span></div>
             <div class="legend-row" style="gap:6px"><i class="chip" style="background:#22D3EE"></i><span class="lg-val">טכנולוגיה</span></div>
+            <div class="legend-row" style="gap:6px"><i class="chip" style="background:#8B5CF6"></i><span class="lg-val">נדל״ן</span></div>
             <div class="legend-row" style="gap:6px"><i class="chip" style="background:#10B981"></i><span class="lg-val">כספית</span></div>
           </div>
           <div class="dca" id="dca" dir="ltr"></div>
@@ -598,8 +662,8 @@ tbody tr.is-now td:first-child{box-shadow:inset 3px 0 0 var(--core)}
       </div>
     </section>
 
-    <!-- ═══ 4 · עקרונות ═══════════════════════════ -->
-    <section class="view" data-view="3" role="tabpanel" aria-label="עקרונות מפתח">
+    <!-- ═══ 5 · עקרונות ═══════════════════════════ -->
+    <section class="view" data-view="4" role="tabpanel" aria-label="עקרונות מפתח">
       <div class="stack">
         <div class="hero" style="background:radial-gradient(130% 100% at 0% 0%,rgba(16,185,129,.18),transparent 62%),linear-gradient(180deg,rgba(22,34,45,.95),rgba(14,22,30,.95))">
           <span class="label">ארבעה עקרונות ברזל</span>
@@ -628,10 +692,14 @@ tbody tr.is-now td:first-child{box-shadow:inset 3px 0 0 var(--core)}
       <span>סימולטור</span>
     </button>
     <button class="tab" role="tab" aria-selected="false" data-tab="2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>
+      <span>הפקדות</span>
+    </button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="3">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
       <span>ביצוע</span>
     </button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="3">
+    <button class="tab" role="tab" aria-selected="false" data-tab="4">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
       <span>עקרונות</span>
     </button>
@@ -652,31 +720,42 @@ var CAPITAL = 1000000;
 var BASE = { core: 0.08, tech: 0.11, cash: 0.04 };
 
 var PILLARS = [
-  { id:'core', name:'עוגן גלובלי', sub:'מדדי מניות עולמיים · MSCI World + S&P 500',
-    amount:650000, pct:65, ret:8, color:'#5D7CFA',
+  { id:'core', name:'עוגן S&P', sub:'‎500 החברות הגדולות בארה״ב · S&P 500',
+    amount:500000, pct:50, ret:8.5, color:'#5D7CFA',
     details:[
-      { ico:'globe', k:'פיזור', v:'אלפי חברות בעשרות מדינות ובכל הסקטורים. התיק אינו תלוי בחברה בודדת, בענף בודד או במדינה בודדת.' },
-      { ico:'layers', k:'מכשירים', v:'קרנות סל איריות צוברות דיבידנד, נסחרות בשקלים בבורסה בתל אביב — בלי המרות מט״ח ובלי דיווח לרשות המס בארה״ב.' },
+      { ico:'globe', k:'פיזור', v:'‎500 החברות הגדולות בארה״ב, מכל הסקטורים. חצי מהתיק, והחלק היציב ביותר בו.' },
+      { ico:'layers', k:'מכשירים', v:'קרן סל אירית צוברת דיבידנד, נסחרת בשקלים בבורסה בתל אביב — בלי המרות מט״ח ובלי דיווח לרשות המס בארה״ב.' },
       { ico:'check', k:'יתרון', v:'דחיית מס מלאה עד למועד המימוש, ודמי ניהול אפסיים של 0.05%–0.2% לשנה.' },
-      { ico:'alert', k:'סיכון', v:'תנודתיות של 15%–30% במשברים עולמיים. הירידה זמנית, ההחזקה ארוכה.' }
+      { ico:'alert', k:'סיכון', v:'תנודתיות של 15%–30% במשברים עולמיים. ב-2008 ירד 55% וחזר תוך כארבע שנים. הירידה זמנית, ההחזקה ארוכה.' }
     ] },
   { id:'tech', name:'מנוע צמיחה', sub:'מדד הטכנולוגיה המובילה · Nasdaq 100',
-    amount:250000, pct:25, ret:11, color:'#22D3EE',
+    amount:200000, pct:20, ret:11, color:'#22D3EE',
     details:[
       { ico:'globe', k:'פיזור', v:'‎100 חברות הטכנולוגיה והחדשנות הגדולות בעולם — Apple, Nvidia, Microsoft, Amazon ואחרות.' },
       { ico:'zap', k:'יתרון', v:'מכפיל תשואה היסטורי עודף על השוק הרחב, מחברות עתירות רווחיות ותזרים מזומנים.' },
       { ico:'layers', k:'מכשירים', v:'קרן סל אירית עוקבת נאסד״ק 100, צוברת, נסחרת בשקלים.' },
-      { ico:'alert', k:'סיכון', v:'תנודתיות חדה של 35%–50% במשברים או בסביבת ריבית עולה. זה החלק שדורש קיבה חזקה.' }
+      { ico:'alert', k:'סיכון', v:'תנודתיות חדה של 35%–50% במשברים או בסביבת ריבית עולה. בדיוק בגלל זה זה חמישית מהתיק ולא יותר.' }
+    ] },
+  { id:'reit', name:'נדל״ן מניב', sub:'קרנות ריט · REITs סחירות בבורסה',
+    amount:200000, pct:20, ret:8.5, color:'#8B5CF6',
+    details:[
+      { ico:'globe', k:'פיזור', v:'חברות שמחזיקות ומשכירות נדל״ן — מחסנים לוגיסטיים, מגורים, מסחר ומשרדים. נדל״ן בלי שוכרים, בלי חוזים ובלי משכנתה.' },
+      { ico:'zap', k:'מקור התשואה', v:'כ-5.5% דיבידנד שנתי מדמי שכירות, המושקע חזרה לתיק, ועוד כ-3% עליית ערך הנכסים.' },
+      { ico:'check', k:'יתרון', v:'הרכיב שהכי פחות זז יחד עם המניות — הוא שמאזן את החפיפה בין העוגן לטכנולוגיה. נזיל וניתן למכירה תוך יום מסחר.' },
+      { ico:'alert', k:'סיכון', v:'רגישות לריבית: כשהריבית עולה, מחירי הריטים יורדים. על הדיבידנד משולם מס שנתי, בשונה מהקרנות הצוברות.' }
     ] },
   { id:'cash', name:'כרית נזילות',  sub:'קרן כספית שקלית · נזילות יומית',
     amount:100000, pct:10, ret:4, color:'#10B981',
     details:[
-      { ico:'zap', k:'נזילות', v:'יומית ומלאה. בלי קנסות, בלי תחנות יציאה, בלי תקופת נעילה.' },
+      { ico:'zap', k:'נזילות', v:'יומית ומלאה. בלי קנסות, בלי תחנות יציאה, בלי תקופת נעילה. מממנת את פעימות הכניסה ואז נשארת ככרית ביטחון.' },
       { ico:'check', k:'יתרון מיסוי', v:'‎25% מס ריאלי בלבד — מס רק על הרווח שמעבר לעליית מדד המחירים לצרכן.' },
       { ico:'layers', k:'מכשירים', v:'מק״מ ואג״ח ממשלתי קצר. אותו כלי שבו הבנקים עצמם מחזיקים עודפי מזומן.' },
       { ico:'alert', k:'סיכון', v:'אפסי מבחינת קרן. הסיכון היחיד הוא שחיקה מול אינפלציה אם מחזיקים כאן יותר מדי, יותר מדי זמן.' }
     ] }
 ];
+
+/* escalating monthly deposit plan: 500 ₪/mo in year 1, +250 ₪/mo every year */
+var DEP = { start:500, step:250 };
 
 var STEPS = [
   { t:'הקמת תשתית וחשבון מסחר', when:'חודש 1', items:[
@@ -684,18 +763,22 @@ var STEPS = [
     'הפקדת מלוא 1,000,000 ₪ ורכישה מיידית של קרן כספית שקלית — הכסף צובר ריבית כבר מהיום הראשון.'
   ]},
   { t:'פעימת כניסה ראשונית', when:'חודש 1', items:[
-    'רכישת 450,000 ₪ במניות: 325,000 ₪ בעוגן הגלובלי ו-125,000 ₪ בנאסד״ק 100.',
+    'רכישת 450,000 ₪ ראשונים: 250,000 ₪ ב-S&P 500, 100,000 ₪ בנאסד״ק 100 ו-100,000 ₪ בקרן ריט.',
     'השארת 100,000 ₪ בקרן הכספית ככרית חירום קבועה שלא נוגעים בה.'
   ]},
   { t:'פריסה חודשית מתוזמנת · DCA', when:'חודשים 2–7', items:[
     'מכירה מתוזמנת מהקרן הכספית של 75,000 ₪ בכל חודש, בתאריך קבוע מראש.',
-    'קנייה קבועה בכל חודש: 54,000 ₪ בעוגן הגלובלי + 21,000 ₪ בטכנולוגיה.',
-    'שישה חודשים × 75,000 ₪ — וכל ההון פרוס לפי היעד, בלי לנסות לתזמן את השוק.'
+    'קנייה קבועה בכל חודש: 41,600 ₪ ב-S&P 500 + 16,700 ₪ בטכנולוגיה + 16,700 ₪ בנדל״ן.',
+    'הפעלת הוראת קבע חודשית של 500 ₪ לחשבון המסחר — ההפקדה השוטפת מתחילה כבר עכשיו.'
+  ]},
+  { t:'שגרת הפקדות ורוטציה', when:'שוטף', items:[
+    'קנייה ברוטציה של ההפקדה החודשית — נייר אחד בלבד בכל חודש, לפי המחזור: S&P, S&P, נדל״ן, טכנולוגיה.',
+    'עדכון הוראת הקבע ב-+250 ₪ בכל ינואר — 500 ₪ בשנה הראשונה, 2,750 ₪ בשנה העשירית.'
   ]},
   { t:'ניהול שוטף ואיזון שנתי', when:'שנים 1–10', items:[
     'אי-מכירה בעת ירידות שוק. משמעת ברזל, בלי יוצאים מן הכלל.',
-    'בדיקה ואיזון מחדש (Rebalancing) פעם בשנה בלבד, בתאריך קבוע.',
-    'לא לבדוק את התיק כל יום. בדיקה רבעונית מספיקה בהחלט.'
+    'השקעה חוזרת של דיבידנד הנדל״ן פעם בחצי שנה עד שנה — הכסף לא נשאר בעו״ש.',
+    'בדיקה ואיזון מחדש (Rebalancing) פעם בשנה בלבד, בתאריך קבוע. לא לבדוק את התיק כל יום.'
   ]}
 ];
 
@@ -862,27 +945,54 @@ document.addEventListener('click', function(e){
   if(t) openSheet(t.getAttribute('data-open'));
 });
 
-/* ── tab 2 · simulator ────────────────────────────── */
-var S = { years:10, core:8, tech:11, cash:4 };
+/* ── tab 2 · simulator (monthly engine with escalating deposits) ── */
+var S = { years:10, dep0:500, depStep:250, reinvest:true };
 var W = 330, H = 178, PAD = { t:18, r:12, b:26, l:12 };
+var ALLOC = { core:500000, tech:200000, reit:200000, cash:100000 };
+var RETS = { core:8.5, tech:11, reit:8.5, reitNoDiv:3, cash:4 };
+function mr(p){ return Math.pow(1 + p/100, 1/12) - 1; }
 
-function valueAt(base, ratePct, t){ return base * Math.pow(1 + ratePct/100, t); }
-function totalAt(t){
-  return valueAt(650000,S.core,t) + valueAt(250000,S.tech,t) + valueAt(100000,S.cash,t);
+/* month-by-month compound growth; the monthly deposit follows the rotation
+   split (1/2 core, 1/4 reit, 1/4 tech) and grows by depStep every 12 months */
+var sim = null;
+function simulate(){
+  var months = S.years * 12;
+  var r = { core:mr(RETS.core), tech:mr(RETS.tech),
+            reit:mr(S.reinvest ? RETS.reit : RETS.reitNoDiv), cash:mr(RETS.cash) };
+  var b = { core:ALLOC.core, tech:ALLOC.tech, reit:ALLOC.reit, cash:ALLOC.cash };
+  var deposited = CAPITAL, m;
+  var pts = [{ t:0, total:CAPITAL, dep:CAPITAL,
+               core:b.core, tech:b.tech, reit:b.reit, cash:b.cash }];
+  for(m = 1; m <= months; m++){
+    b.core *= 1 + r.core; b.tech *= 1 + r.tech;
+    b.reit *= 1 + r.reit; b.cash *= 1 + r.cash;
+    var D = S.dep0 + S.depStep * Math.floor((m-1)/12);
+    b.core += D * .5; b.tech += D * .25; b.reit += D * .25;
+    deposited += D;
+    pts.push({ t:m/12, total:b.core+b.tech+b.reit+b.cash, dep:deposited,
+               core:b.core, tech:b.tech, reit:b.reit, cash:b.cash });
+  }
+  sim = { pts:pts, end:pts[pts.length-1] };
 }
+function atYear(y){ return sim.pts[Math.min(Math.round(y*12), sim.pts.length-1)]; }
 
 function drawChart(){
-  var maxV = totalAt(S.years);
-  var yMax = Math.max(maxV * 1.08, CAPITAL * 1.1);
+  var pts = sim.pts, maxV = sim.end.total;
+  var yMax = Math.max(maxV * 1.08, CAPITAL * 1.15);
   var X = function(t){ return PAD.l + (t / S.years) * (W - PAD.l - PAD.r); };
   var Y = function(v){ return H - PAD.b - (v / yMax) * (H - PAD.t - PAD.b); };
 
-  var N = 72, pts = [], i;
-  for(i = 0; i <= N; i++){
-    var t = (i / N) * S.years;
-    pts.push(X(t).toFixed(2) + ',' + Y(totalAt(t)).toFixed(2));
+  var step = Math.max(1, Math.round(pts.length / 90));
+  var vLine = [], dLine = [], i, p;
+  for(i = 0; i < pts.length; i += step){
+    p = pts[i];
+    vLine.push(X(p.t).toFixed(2) + ',' + Y(p.total).toFixed(2));
+    dLine.push(X(p.t).toFixed(2) + ',' + Y(p.dep).toFixed(2));
   }
-  var line = 'M' + pts.join(' L');
+  p = sim.end;
+  vLine.push(X(p.t).toFixed(2) + ',' + Y(p.total).toFixed(2));
+  dLine.push(X(p.t).toFixed(2) + ',' + Y(p.dep).toFixed(2));
+  var line = 'M' + vLine.join(' L');
   var area = line + ' L' + X(S.years).toFixed(2) + ',' + (H - PAD.b) + ' L' + X(0).toFixed(2) + ',' + (H - PAD.b) + ' Z';
 
   var grid = '';
@@ -891,9 +1001,9 @@ function drawChart(){
     grid += '<line class="grid" x1="'+PAD.l+'" y1="'+y.toFixed(1)+'" x2="'+(W-PAD.r)+'" y2="'+y.toFixed(1)+'"/>';
   });
 
-  var yP = Y(CAPITAL);
   var endX = X(S.years), endY = Y(maxV);
   var labelX = Math.min(endX, W - PAD.r - 4);
+  var depY = Y(sim.end.dep);
 
   $('#chart').innerHTML =
     '<defs>' +
@@ -908,8 +1018,9 @@ function drawChart(){
     grid +
     '<line class="grid" x1="'+PAD.l+'" y1="'+(H-PAD.b)+'" x2="'+(W-PAD.r)+'" y2="'+(H-PAD.b)+'"/>' +
     '<path d="'+area+'" fill="url(#fillGrad)"/>' +
-    '<line class="principal" x1="'+PAD.l+'" y1="'+yP.toFixed(1)+'" x2="'+(W-PAD.r)+'" y2="'+yP.toFixed(1)+'"/>' +
-    '<text class="p-label" x="'+(PAD.l+3)+'" y="'+(yP-5).toFixed(1)+'">ההון הראשוני · 1 מ׳</text>' +
+    '<path d="M'+dLine.join(' L')+'" fill="none" stroke="#F59E0B" stroke-width="1.6" ' +
+      'stroke-dasharray="4 4" stroke-linecap="round" opacity=".85"/>' +
+    '<text class="p-label" x="'+(PAD.l+3)+'" y="'+(depY-5).toFixed(1)+'" style="fill:#F59E0B">סך מהכיס · '+short(sim.end.dep)+'</text>' +
     '<path d="'+line+'" fill="none" stroke="url(#strokeGrad)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
     '<circle cx="'+endX.toFixed(1)+'" cy="'+endY.toFixed(1)+'" r="7" fill="#22D3EE" opacity=".22"/>' +
     '<circle cx="'+endX.toFixed(1)+'" cy="'+endY.toFixed(1)+'" r="3.6" fill="#0C141B" stroke="#22D3EE" stroke-width="2.4"/>' +
@@ -920,13 +1031,14 @@ function drawChart(){
 }
 
 function drawSplit(){
+  var e = sim.end;
   var parts = [
-    { n:'עוגן', v:valueAt(650000,S.core,S.years), c:'#5D7CFA' },
-    { n:'טכנולוגיה', v:valueAt(250000,S.tech,S.years), c:'#22D3EE' },
-    { n:'כספית', v:valueAt(100000,S.cash,S.years), c:'#10B981' }
+    { n:'עוגן S&P', v:e.core, c:'#5D7CFA' },
+    { n:'טכנולוגיה', v:e.tech, c:'#22D3EE' },
+    { n:'נדל״ן', v:e.reit, c:'#8B5CF6' },
+    { n:'כספית', v:e.cash, c:'#10B981' }
   ];
-  var max = Math.max(parts[0].v, parts[1].v, parts[2].v);
-  var sum = parts[0].v + parts[1].v + parts[2].v;
+  var max = Math.max.apply(null, parts.map(function(p){ return p.v; }));
   $('#split').innerHTML = parts.map(function(p){
     return '<div class="split-row">' +
       '<span class="sr-name">'+p.n+'</span>' +
@@ -937,41 +1049,39 @@ function drawSplit(){
   '<div class="split-row" style="border-top:1px solid var(--line-soft);padding-top:10px">' +
     '<span class="sr-name" style="font-weight:700">משקל טכנולוגיה</span>' +
     '<span class="split-bar" style="opacity:0"></span>' +
-    '<span class="sr-val">'+((parts[1].v/sum)*100).toFixed(1)+'%</span>' +
+    '<span class="sr-val">'+((parts[1].v/e.total)*100).toFixed(1)+'%</span>' +
   '</div>';
 }
 
 function drawTable(){
-  var years = [1,3,5,7,10,15,20];
+  var years = [1,3,5,7,10,12,15];
   if(years.indexOf(S.years) === -1) years.push(S.years);
-  years = years.filter(function(y){ return y <= 20; }).sort(function(a,b){ return a-b; });
+  years = years.filter(function(y){ return y <= S.years; }).sort(function(a,b){ return a-b; });
 
   $('#milestones').innerHTML = years.map(function(t){
-    var c = valueAt(650000,S.core,t), g = valueAt(250000,S.tech,t), k = valueAt(100000,S.cash,t);
-    var tot = c + g + k;
+    var p = atYear(t);
     var cls = (t === S.years) ? ' class="is-now"' : '';
     return '<tr'+cls+'>' +
       '<td>'+t+'</td>' +
-      '<td>'+short(c)+'</td>' +
-      '<td>'+short(g)+'</td>' +
-      '<td>'+short(k)+'</td>' +
-      '<td class="t-total">'+short(tot)+'</td>' +
-      '<td class="t-gain">+'+short(tot - CAPITAL)+'</td>' +
+      '<td>'+short(p.dep)+'</td>' +
+      '<td class="t-total">'+short(p.total)+'</td>' +
+      '<td class="t-gain">+'+short(p.total - p.dep)+'</td>' +
+      '<td>פי '+(p.total/p.dep).toFixed(2)+'</td>' +
     '</tr>';
   }).join('');
 }
 
 function render(){
-  var tot = totalAt(S.years);
-  var profit = tot - CAPITAL;
+  simulate();
+  var tot = sim.end.total, dep = sim.end.dep;
   $('#kpiYears').textContent = S.years;
   $('#kpiTotal').textContent = num(tot) + ' ₪';
-  $('#kpiProfit').textContent = '+' + num(profit) + ' ₪';
-  $('#kpiMult').textContent = 'פי ' + (tot/CAPITAL).toFixed(2);
+  $('#kpiDeposited').textContent = num(dep) + ' ₪';
+  $('#kpiProfit').textContent = '+' + num(tot - dep) + ' ₪';
+  $('#kpiMult').textContent = 'פי ' + (tot/dep).toFixed(2);
   $('#vYears').textContent = S.years;
-  $('#vCore').textContent = S.core.toFixed(1);
-  $('#vTech').textContent = S.tech.toFixed(1);
-  $('#vCash').textContent = S.cash.toFixed(1);
+  $('#vDep0').textContent = num(S.dep0);
+  $('#vDepStep').textContent = num(S.depStep);
   drawChart(); drawSplit(); drawTable();
 }
 
@@ -982,7 +1092,7 @@ function paintTrack(input, color){
     'linear-gradient(to right,'+color+' 0%,'+color+' '+pct+'%,#1A2731 '+pct+'%,#1A2731 100%)');
 }
 
-[['#sYears','years','#5D7CFA'],['#sCore','core','#5D7CFA'],['#sTech','tech','#22D3EE'],['#sCash','cash','#10B981']]
+[['#sYears','years','#5D7CFA'],['#sDep0','dep0','#F59E0B'],['#sDepStep','depStep','#F59E0B']]
 .forEach(function(cfg){
   var input = $(cfg[0]);
   paintTrack(input, cfg[2]);
@@ -992,16 +1102,56 @@ function paintTrack(input, color){
     render();
   });
 });
+$('#tReinvest').addEventListener('change', function(){
+  S.reinvest = this.checked;
+  render();
+});
 render();
+
+/* ── tab 3 · deposits & rotation ──────────────────── */
+(function buildDeposits(){
+  var tb = $('#depTable');
+  if(!tb) return;
+  var rows = '', cum = 0, y;
+  for(y = 1; y <= 10; y++){
+    var mth = DEP.start + DEP.step*(y-1), yr = mth*12;
+    cum += yr;
+    rows += '<tr'+(y === 10 ? ' class="is-now"' : '')+'>' +
+      '<td>'+y+'</td><td>'+num(mth)+' ₪</td><td>'+num(yr)+' ₪</td>' +
+      '<td class="t-total">'+num(cum)+' ₪</td></tr>';
+  }
+  tb.innerHTML = rows;
+
+  var ROT = [
+    { m:'חודש 1', f:'S&P 500', c:'#5D7CFA' },
+    { m:'חודש 2', f:'S&P 500', c:'#5D7CFA' },
+    { m:'חודש 3', f:'נדל״ן · ריט', c:'#8B5CF6' },
+    { m:'חודש 4', f:'טכנולוגיה · נאסד״ק', c:'#22D3EE' }
+  ];
+  $('#rotation').innerHTML = ROT.map(function(r, i){
+    return '<div style="display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:12px;' +
+        'background:rgba(8,13,18,.55);border:1px solid var(--line-soft)">' +
+      '<span style="width:26px;height:26px;flex:none;border-radius:50%;display:grid;place-items:center;' +
+        'font-size:12px;font-weight:700;color:'+r.c+';background:rgba(255,255,255,.04);border:1px solid '+r.c+'55">'+(i+1)+'</span>' +
+      '<span style="flex:1;font-size:13.5px;color:var(--muted)">'+r.m+' · כל ההפקדה לקרן אחת</span>' +
+      '<b style="font-size:13.5px;color:'+r.c+'">'+r.f+'</b>' +
+    '</div>';
+  }).join('');
+})();
 
 /* ── tab 3 · DCA timeline + stepper ───────────────── */
 (function buildDCA(){
   var months = [], m;
   for(m = 0; m <= 7; m++){
-    var core, tech, cash;
-    if(m === 0){ core = 0; tech = 0; cash = 1000000; }
-    else { core = 325000 + (m-1)*54000; tech = 125000 + (m-1)*21000; cash = 1000000 - core - tech; }
-    months.push({ m:m, core:core, tech:tech, cash:cash });
+    var core, tech, reit, cash;
+    if(m === 0){ core = 0; tech = 0; reit = 0; cash = 1000000; }
+    else {
+      core = 250000 + (m-1)*41600;
+      tech = 100000 + (m-1)*16700;
+      reit = 100000 + (m-1)*16700;
+      cash = 1000000 - core - tech - reit;
+    }
+    months.push({ m:m, core:core, tech:tech, reit:reit, cash:cash });
   }
   var total = 1000000;
   $('#dca').innerHTML = months.map(function(x){
@@ -1010,7 +1160,7 @@ render();
       return '<i style="height:'+(v/total*96).toFixed(1)+'%;background:'+c+'"></i>';
     };
     return '<div class="dca-col">' +
-      bar(x.cash,'#10B981') + bar(x.tech,'#22D3EE') + bar(x.core,'#5D7CFA') +
+      bar(x.cash,'#10B981') + bar(x.reit,'#8B5CF6') + bar(x.tech,'#22D3EE') + bar(x.core,'#5D7CFA') +
     '</div>';
   }).join('');
   $('#dcaX').innerHTML = months.map(function(x){ return '<span>'+x.m+'</span>'; }).join('');
