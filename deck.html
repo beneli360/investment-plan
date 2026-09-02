@@ -30,7 +30,7 @@
   --line:#22323F; --line-soft:#1A2934;
   --text:#EDF4F9; --muted:#A7BACA; --faint:#6B8296;
   --sp:#4F87F5; --tech:#2EDCF2; --reit:#B57BF7; --cash:#20C997;
-  --warn:#F5A524; --warn-text:#EAD3A8; --red:#F26B6B;
+  --warn:#F5A524; --warn-text:#EAD3A8; --red:#F26B6B; --orange:#F97316;
   --inset:rgba(0,0,0,.28); --track:rgba(255,255,255,.07);
   --donut-track:#131E28;
   --glow-o:1;
@@ -46,7 +46,7 @@
   --line:#D9E2EB; --line-soft:#E5ECF3;
   --text:#101D29; --muted:#43566A; --faint:#66798D;
   --sp:#2A63DE; --tech:#0788A6; --reit:#8347DE; --cash:#0C9A66;
-  --warn:#A96A08; --warn-text:#6E4E0E; --red:#D64545;
+  --warn:#A96A08; --warn-text:#6E4E0E; --red:#D64545; --orange:#C2410C;
   --inset:rgba(16,29,41,.045); --track:rgba(16,29,41,.09);
   --donut-track:#E4EBF2;
   --glow-o:.45;
@@ -213,6 +213,55 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .pv svg{width:20px;height:20px}
 .count{font-size:13.5px;font-weight:700;color:var(--faint);min-width:48px;text-align:center;direction:ltr}
 
+/* ── strategy picker ─────────────────────────────── */
+body[data-mode="welcome"] .nav,
+body[data-mode="welcome"] .rail,
+body[data-mode="welcome"] .backTo{display:none}
+body:not([data-mode="welcome"]) .chooser{display:none}
+
+.backTo{position:fixed;top:calc(14px + env(safe-area-inset-top));inset-inline-start:16px;z-index:60;
+  display:flex;align-items:center;gap:7px;height:44px;padding:0 16px;border-radius:99px;
+  background:var(--glass);border:1px solid var(--glass-line);box-shadow:var(--float-shadow);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);
+  color:var(--muted);font-size:13px;font-weight:700;
+  transition:color .2s var(--ease),transform .16s var(--ease)}
+.backTo:hover{color:var(--text)}
+.backTo:active{transform:scale(.95)}
+.backTo svg{width:15px;height:15px;flex:none}
+
+.chooser{display:flex;flex-direction:column;position:relative;min-height:100dvh;
+  padding:calc(70px + env(safe-area-inset-top)) 24px 48px}
+.chooser::before{content:"";position:absolute;inset:0 0 auto;height:100dvh;z-index:-1;pointer-events:none;
+  opacity:var(--glow-o);
+  background:radial-gradient(85% 55% at 50% 0%,rgba(79,135,245,.16),transparent 70%)}
+.chooser .inner{margin:auto}
+
+.stat3{display:flex;gap:9px}
+.stat3>div{flex:1;background:var(--surface);border:1px solid var(--line-soft);
+  border-radius:16px;padding:12px 8px;text-align:center;box-shadow:var(--card-shadow)}
+.stat3 b{display:block;font-size:15px;font-weight:800;white-space:nowrap}
+.stat3 span{display:block;font-size:11.5px;color:var(--faint);font-weight:600;margin-top:2px}
+
+.pick{display:flex;flex-direction:column;gap:13px;padding:18px;border-radius:20px;text-align:start;
+  background:var(--surface);border:1px solid var(--line);box-shadow:var(--card-shadow);
+  transition:transform .16s var(--ease),border-color .2s var(--ease)}
+.pick:hover{border-color:color-mix(in srgb,var(--sp) 45%,transparent)}
+.pick:active{transform:scale(.985)}
+.pick h3{font-size:19px;font-weight:800;margin:0;letter-spacing:-.01em}
+.badges{display:flex;gap:6px;flex-wrap:wrap}
+.badge{font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:99px;border:1px solid}
+.mix{display:flex;flex-direction:column;gap:7px}
+.mix-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.mix-row i{width:9px;height:9px;border-radius:3px;flex:none}
+.mix-row b{color:var(--text);font-weight:700;min-width:36px}
+.proj{display:flex;flex-direction:column;gap:2px;padding:12px 14px;border-radius:14px;
+  background:var(--inset);border:1px dashed var(--line)}
+.proj span{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700}
+.proj b{font-family:"Frank Ruhl Libre",serif;font-size:25px;font-weight:900;letter-spacing:-.02em}
+.proj em{font-style:normal;font-size:12px;color:var(--muted);font-weight:600}
+.pick-cta{display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;
+  border-radius:15px;font-size:16px;font-weight:700;color:#fff}
+
 @media (prefers-reduced-transparency:reduce){
   .navin,.theme{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}
 }
@@ -226,7 +275,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 }
 </style>
 </head>
-<body>
+<body data-mode="welcome">
 
 <div class="rail"><i id="rail" style="width:6%"></i></div>
 
@@ -235,10 +284,75 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
   <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
 </button>
 
+<button class="backTo" type="button" data-set-mode="welcome">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+  <span>בחירת מסלול</span>
+</button>
+
+<!-- מסך בחירת מסלול -->
+<section class="chooser">
+  <div class="inner">
+    <span class="eyebrow">תוכנית השקעה</span>
+    <h1 class="h-lg">בחר את המסלול שלך</h1>
+    <p class="lead">אותו מיליון, אותה תוכנית הפקדות — שני פרופילי סיכון שונים לגמרי.</p>
+    <div class="stat3">
+      <div><b>1,000,000 ₪</b><span>הון פתיחה</span></div>
+      <div><b>10 שנים</b><span>אופק</span></div>
+      <div><b>500 ₪+</b><span>הפקדה חודשית</span></div>
+    </div>
+
+    <button class="pick" type="button" data-set-mode="balanced">
+      <div class="badges">
+        <span class="badge" style="color:var(--cash);border-color:color-mix(in srgb,var(--cash) 40%,transparent);background:color-mix(in srgb,var(--cash) 9%,transparent)">סיכון בינוני-נמוך</span>
+        <span class="badge" style="color:var(--sp);border-color:color-mix(in srgb,var(--sp) 40%,transparent);background:color-mix(in srgb,var(--sp) 9%,transparent)">תנודתיות מתונה</span>
+      </div>
+      <h3>🛡️ המסלול המאוזן ורב-הנכסי</h3>
+      <div class="mix">
+        <div class="mix-row"><i style="background:var(--sp)"></i><b>50%</b><span>מדד S&amp;P 500</span></div>
+        <div class="mix-row"><i style="background:var(--tech)"></i><b>20%</b><span>מנוע טכנולוגיה · נאסד״ק</span></div>
+        <div class="mix-row"><i style="background:var(--reit)"></i><b>20%</b><span>נדל״ן מניב נזיל · ריט</span></div>
+        <div class="mix-row"><i style="background:var(--cash)"></i><b>10%</b><span>כרית כספית שקלית</span></div>
+      </div>
+      <div class="proj">
+        <span>צפי לעשור · כולל הפקדות</span>
+        <b style="color:var(--cash)">כ-2,571,000 ₪</b>
+        <em>תשואה שנתית משוקללת כ-8.5%</em>
+      </div>
+      <span class="pick-cta" style="background:linear-gradient(135deg,var(--sp),var(--cash))">כניסה לתוכנית המאוזנת</span>
+    </button>
+
+    <button class="pick" type="button" data-set-mode="aggressive" style="border-color:color-mix(in srgb,var(--reit) 40%,transparent)">
+      <div class="badges">
+        <span class="badge" style="color:var(--orange);border-color:color-mix(in srgb,var(--orange) 45%,transparent);background:color-mix(in srgb,var(--orange) 9%,transparent)">סיכון גבוה</span>
+        <span class="badge" style="color:var(--warn);border-color:color-mix(in srgb,var(--warn) 45%,transparent);background:color-mix(in srgb,var(--warn) 9%,transparent)">תנודתיות חדה</span>
+      </div>
+      <h3>🚀 המסלול האגרסיבי לתשואת-על</h3>
+      <div class="mix">
+        <div class="mix-row"><i style="background:var(--reit)"></i><b>35%</b><span>נאסד״ק 100 · QQQ</span></div>
+        <div class="mix-row"><i style="background:var(--tech)"></i><b>25%</b><span>מוליכים למחצה ושבבי AI · SMH</span></div>
+        <div class="mix-row"><i style="background:var(--warn)"></i><b>15%</b><span>קריפטו מוסדר · IBIT</span></div>
+        <div class="mix-row"><i style="background:var(--orange)"></i><b>15%</b><span>מינוף מתון פי 2 · SSO</span></div>
+        <div class="mix-row"><i style="background:var(--sp)"></i><b>10%</b><span>עוגן S&amp;P 500</span></div>
+      </div>
+      <div class="proj">
+        <span>צפי לעשור · כולל הפקדות</span>
+        <b style="color:var(--warn)">כ-4,786,000 ₪</b>
+        <em>תשואה שנתית משוקללת כ-15%</em>
+      </div>
+      <span class="pick-cta" style="background:linear-gradient(135deg,var(--reit),var(--orange))">כניסה לתוכנית האגרסיבית</span>
+    </button>
+
+    <p class="foot">
+      שני המסלולים הם הדמיה מתמטית של הנחות תשואה — לא ייעוץ השקעות או ייעוץ מס.
+      המסלול האגרסיבי כולל מינוף ונכסים דיגיטליים, וחשוף לירידות זמניות חדות של 40%–50%.
+    </p>
+  </div>
+</section>
+
 <div class="deck" id="deck">
 
 <!-- 1 -->
-<section class="slide on" style="--glow:rgba(79,135,245,.20)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(79,135,245,.20)">
   <div class="inner">
     <span class="eyebrow">תוכנית השקעה</span>
     <h1 class="h-xl">מיליון שקל,<br>עשר שנים</h1>
@@ -248,7 +362,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 2 -->
-<section class="slide" style="--glow:rgba(32,201,151,.17)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(32,201,151,.17)">
   <div class="inner">
     <span class="eyebrow">המטרה</span>
     <div class="jump">
@@ -263,7 +377,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 3 -->
-<section class="slide" style="--glow:rgba(79,135,245,.17)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(79,135,245,.17)">
   <div class="inner">
     <span class="eyebrow">הרעיון</span>
     <h2 class="h-lg">ארבע החלטות,<br>וזהו</h2>
@@ -277,7 +391,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 4 -->
-<section class="slide" style="--glow:rgba(181,123,247,.16)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(181,123,247,.16)">
   <div class="inner">
     <span class="eyebrow">ארבעת הסלים</span>
     <svg id="donut" class="viz" viewBox="0 0 180 180" style="max-width:178px;margin-inline:auto" role="img" aria-label="‎50 אחוז מדד אס אנד פי, 20 אחוז טכנולוגיה, 20 אחוז נדלן, 10 אחוז כסף נזיל"></svg>
@@ -291,7 +405,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 5 -->
-<section class="slide" style="--glow:rgba(79,135,245,.19)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(79,135,245,.19)">
   <div class="inner">
     <span class="eyebrow">סל 1 · העוגן</span>
     <h2 class="h-lg" style="color:var(--sp)">500,000 ₪</h2>
@@ -306,7 +420,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 6 -->
-<section class="slide" style="--glow:rgba(46,220,242,.18)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(46,220,242,.18)">
   <div class="inner">
     <span class="eyebrow">סל 2 · מנוע הצמיחה</span>
     <h2 class="h-lg" style="color:var(--tech)">200,000 ₪</h2>
@@ -321,7 +435,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 7 -->
-<section class="slide" style="--glow:rgba(181,123,247,.19)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(181,123,247,.19)">
   <div class="inner">
     <span class="eyebrow">סל 3 · נדל״ן מניב</span>
     <h2 class="h-lg" style="color:var(--reit)">200,000 ₪</h2>
@@ -337,7 +451,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 8 -->
-<section class="slide" style="--glow:rgba(181,123,247,.15)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(181,123,247,.15)">
   <div class="inner">
     <span class="eyebrow">הדיבידנד מהנדל״ן</span>
     <h2 class="h-lg">כ-700 ₪ בחודש<br>שחוזרים לתיק</h2>
@@ -351,7 +465,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 9 -->
-<section class="slide" style="--glow:rgba(32,201,151,.17)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(32,201,151,.17)">
   <div class="inner">
     <span class="eyebrow">סל 4 · כסף נזיל</span>
     <h2 class="h-lg" style="color:var(--cash)">100,000 ₪</h2>
@@ -363,7 +477,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 10 · הפקדות מדורגות -->
-<section class="slide" style="--glow:rgba(245,165,36,.16)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(245,165,36,.16)">
   <div class="inner">
     <span class="eyebrow">המנוע השני · הפקדה חודשית</span>
     <h2 class="h-lg">מתחילים ב-500 ₪,<br>מוסיפים 250 ₪ כל שנה</h2>
@@ -385,7 +499,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 11 · רוטציה חודשית -->
-<section class="slide" style="--glow:rgba(79,135,245,.16)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(79,135,245,.16)">
   <div class="inner">
     <span class="eyebrow">איך קונים כל חודש</span>
     <h2 class="h-lg">נייר אחד בחודש,<br>בלי לשרוף עמלות</h2>
@@ -405,7 +519,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 12 -->
-<section class="slide" style="--glow:rgba(181,123,247,.15)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(181,123,247,.15)">
   <div class="inner">
     <span class="eyebrow">מה שכדאי לשים לב אליו</span>
     <h2 class="h-lg">שני הסלים הראשונים<br>קונים אותן חברות</h2>
@@ -425,7 +539,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 13 -->
-<section class="slide" style="--glow:rgba(245,165,36,.15)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(245,165,36,.15)">
   <div class="inner">
     <span class="eyebrow">מה באמת נשאר ביד</span>
     <h2 class="h-lg">‎2.3 מיליון<br>זה לא 2.3 מיליון</h2>
@@ -445,7 +559,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 14 -->
-<section class="slide" style="--glow:rgba(79,135,245,.15)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(79,135,245,.15)">
   <div class="inner">
     <span class="eyebrow">טווח אפשרויות</span>
     <h2 class="h-lg">זה לא מספר אחד,<br>זה טווח</h2>
@@ -461,7 +575,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 15 -->
-<section class="slide" style="--glow:rgba(245,165,36,.14)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(245,165,36,.14)">
   <div class="inner">
     <span class="eyebrow">איך נכנסים</span>
     <h2 class="h-lg">לא הכל<br>ביום אחד</h2>
@@ -478,7 +592,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 16 -->
-<section class="slide" style="--glow:rgba(46,220,242,.15)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(46,220,242,.15)">
   <div class="inner">
     <span class="eyebrow">לוח הקניות</span>
     <h2 class="h-lg">שבעה חודשים</h2>
@@ -502,7 +616,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 17 -->
-<section class="slide" style="--glow:rgba(245,165,36,.15)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(245,165,36,.15)">
   <div class="inner">
     <span class="eyebrow">איפה מנהלים את זה</span>
     <h2 class="h-lg">בית השקעות,<br>לא בנק</h2>
@@ -517,7 +631,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 18 -->
-<section class="slide" style="--glow:rgba(79,135,245,.15)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(79,135,245,.15)">
   <div class="inner">
     <span class="eyebrow">מיסים</span>
     <h2 class="h-lg">משלמים פעם אחת,<br>בסוף</h2>
@@ -531,7 +645,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 19 -->
-<section class="slide" style="--glow:rgba(245,165,36,.16)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(245,165,36,.16)">
   <div class="inner">
     <span class="eyebrow">הכלל היחיד שחייבים</span>
     <h2 class="h-lg">לא מוכרים<br>כשיורד</h2>
@@ -545,7 +659,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 </section>
 
 <!-- 20 -->
-<section class="slide" style="--glow:rgba(32,201,151,.17)">
+<section class="slide" data-mode="balanced" style="--glow:rgba(32,201,151,.17)">
   <div class="inner">
     <span class="eyebrow">סיכום</span>
     <h2 class="h-lg">מה עושים עכשיו</h2>
@@ -560,6 +674,252 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
       המספרים הם הערכה לפי ממוצעי העבר, לא הבטחה — השוק יכול גם לרדת, וההון חשוף להפסד.
       שיעורי המס ונתוני המדדים נכונים למועד הכנת התוכנית ויש לאמת אותם לפני ביצוע.
       זו תוכנית אישית ואינה ייעוץ השקעות או ייעוץ מס.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ המסלול האגרסיבי ═══════════ -->
+
+<!-- א1 · שער -->
+<section class="slide" data-mode="aggressive" style="--glow:rgba(181,123,247,.22)">
+  <div class="inner">
+    <span class="eyebrow">המסלול האגרסיבי</span>
+    <h1 class="h-xl">תשואת-על,<br>בעצבים חזקים</h1>
+    <div class="jump">
+      <span class="from">1,000,000 ₪</span>
+      <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg></span>
+      <span class="to" style="color:var(--warn)">4,786,000 ₪</span>
+    </div>
+    <p class="lead">בעוד עשר שנים, עם אותה תוכנית הפקדות — 500 ₪ בחודש שגדלים כל שנה. זה <strong>בערך פי 4 על כל שקל מהכיס.</strong> אם עומדים בדרך.</p>
+    <p class="foot">‎14 שקופיות. תשואה משוקללת של כ-15% בשנה — הנחה אופטימית מאוד, לא הבטחה.</p>
+  </div>
+</section>
+
+<!-- א2 · הרעיון -->
+<section class="slide" data-mode="aggressive" style="--glow:rgba(181,123,247,.17)">
+  <div class="inner">
+    <span class="eyebrow">הרעיון</span>
+    <h2 class="h-lg">ארבע החלטות,<br>גרסה אגרסיבית</h2>
+    <div class="rows">
+      <div class="row"><span class="n">1</span><span class="rt"><b>רוכבים על מהפכת ה-AI.</b><em>נאסד״ק, שבבים וביטקוין מוסדר — 75% מהתיק</em></span></div>
+      <div class="row"><span class="n">2</span><span class="rt"><b>מוסיפים מאיץ ממונף קטן.</b><em>‎15% במדד ממונף פי 2, לא יותר</em></span></div>
+      <div class="row"><span class="n">3</span><span class="rt"><b>סופגים ירידות של 40%–50% בלי למכור.</b><em>זה לא תרחיש קיצון — זה חלק מהעסקה</em></span></div>
+      <div class="row"><span class="n">4</span><span class="rt"><b>ומאזנים מחדש פעם בשנה.</b><em>מקבעים רווח מהנכסים החמים, קונים את החלשים</em></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- א3 · חמשת הנכסים -->
+<section class="slide" data-mode="aggressive" style="--glow:rgba(245,165,36,.16)">
+  <div class="inner">
+    <span class="eyebrow">חמשת הנכסים</span>
+    <svg id="donutA" class="viz" viewBox="0 0 180 180" style="max-width:178px;margin-inline:auto" role="img" aria-label="‎35 אחוז נאסדק, 25 אחוז שבבים, 15 אחוז קריפטו, 15 אחוז מינוף, 10 אחוז עוגן"></svg>
+    <div class="legend">
+      <div class="lrow"><i class="dot" style="background:var(--reit)"></i><span class="ln">נאסד״ק 100<em>‎11.5% בשנה</em></span><span class="lv" style="color:var(--reit)">350,000 ₪</span></div>
+      <div class="lrow"><i class="dot" style="background:var(--tech)"></i><span class="ln">שבבים ו-AI<em>‎16% בשנה</em></span><span class="lv" style="color:var(--tech)">250,000 ₪</span></div>
+      <div class="lrow"><i class="dot" style="background:var(--warn)"></i><span class="ln">קריפטו מוסדר<em>‎25% בשנה</em></span><span class="lv" style="color:var(--warn)">150,000 ₪</span></div>
+      <div class="lrow"><i class="dot" style="background:var(--orange)"></i><span class="ln">מינוף פי 2<em>‎16% בשנה</em></span><span class="lv" style="color:var(--orange)">150,000 ₪</span></div>
+      <div class="lrow"><i class="dot" style="background:var(--sp)"></i><span class="ln">עוגן S&amp;P 500<em>‎8.5% בשנה</em></span><span class="lv" style="color:var(--sp)">100,000 ₪</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- א4 · נאסד״ק -->
+<section class="slide" data-mode="aggressive" style="--glow:rgba(181,123,247,.19)">
+  <div class="inner">
+    <span class="eyebrow">נכס 1 · הליבה · נאסד״ק</span>
+    <h2 class="h-lg" style="color:var(--reit)">350,000 ₪</h2>
+    <div class="share"><i style="width:35%;background:var(--reit)"></i></div>
+    <p class="lead">מדד <strong>נאסד״ק 100</strong> — ‎100 חברות הטכנולוגיה הגדולות בעולם, דרך קרן QQQ: התוכנה, הענן והפלטפורמות שמריצות את מהפכת ה-AI.</p>
+    <p class="lead">אלה לא חברות חלום: <strong>אפל, מיקרוסופט, אנבידיה, גוגל, אמזון ומטא</strong> — העסקים הרווחיים בהיסטוריה, עם תזרימי מזומנים אמיתיים שמממנים את תשתיות ה-AI של העולם כולו.</p>
+    <div class="math"><b>350,000 ₪</b><span class="eq">שגדלים ב-11.5% בשנה</span><span class="eq">←</span><b style="color:var(--reit)">1,040,000 ₪</b></div>
+    <div class="punch v">
+      <span class="pl">למה 35% דווקא כאן</span>
+      <p>כי זו הדרך הרחבה ביותר לרכוב על המהפכה בלי להמר על מנצח בודד — אם ה-AI מצליח, קשה מאוד שהוא יעקוף את מאה החברות האלה.</p>
+    </div>
+    <div class="note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+      <p>ירידות של <b>30%–50%</b> קרו כאן ב-2000, ב-2008 וב-2022. הליבה של המסלול — וגם היא לא שקטה.</p>
+    </div>
+  </div>
+</section>
+
+<!-- א5 · שבבים -->
+<section class="slide" data-mode="aggressive" style="--glow:rgba(46,220,242,.18)">
+  <div class="inner">
+    <span class="eyebrow">נכס 2 · החוד</span>
+    <h2 class="h-lg" style="color:var(--tech)">250,000 ₪</h2>
+    <div class="share"><i style="width:25%;background:var(--tech)"></i></div>
+    <p class="lead">צוואר הבקבוק של מהפכת ה-AI: <strong>אנבידיה, TSMC, ברודקום</strong> ויצרניות ציוד הייצור, דרך קרן <strong>SMH</strong>. הביקוש לשבבים גדל מהר מההיצע.</p>
+    <p class="lead">השרשרת פשוטה: כל מודל AI בעולם מתאמן על מעבדים של אנבידיה, שמיוצרים במפעלי TSMC, על מכונות של ASML. הקרן מחזיקה <strong>את שרשרת הייצור כולה — כ-25 חברות.</strong></p>
+    <div class="math"><b>250,000 ₪</b><span class="eq">שגדלים ב-16% בשנה</span><span class="eq">←</span><b style="color:var(--tech)">1,103,000 ₪</b></div>
+    <div class="punch">
+      <span class="pl">ההיגיון</span>
+      <p>בקדחת זהב, מי שמוכר את האתים מרוויח בכל תרחיש. לא משנה איזו חברת AI תנצח — כולן קונות את השבבים מאותם ספקים.</p>
+    </div>
+    <div class="note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+      <p>סקטור אחד, מחזורי וחד: ירידות של <b>40%–60%</b> קרו בעבר, וריכוז הייצור בטייוואן הוא סיכון גיאופוליטי ממשי.</p>
+    </div>
+  </div>
+</section>
+
+<!-- א6 · קריפטו -->
+<section class="slide" data-mode="aggressive" style="--glow:rgba(245,165,36,.18)">
+  <div class="inner">
+    <span class="eyebrow">נכס 3 · הדינמיט</span>
+    <h2 class="h-lg" style="color:var(--warn)">150,000 ₪</h2>
+    <div class="share"><i style="width:15%;background:var(--warn)"></i></div>
+    <p class="lead">ביטקוין דרך <strong>IBIT</strong> — קרן ספוט מוסדרת של BlackRock שנסחרת בוול סטריט. <strong>בלי ארנקים, בלי מפתחות, בלי בורסות קריפטו</strong> — נייר ערך רגיל.</p>
+    <div class="math"><b>150,000 ₪</b><span class="eq">שגדלים ב-25% בשנה</span><span class="eq">←</span><b style="color:var(--warn)">1,397,000 ₪</b></div>
+    <div class="punch">
+      <span class="pl">למה רק 15%</span>
+      <p>‎25% בשנה היא ההנחה הכי אופטימית בתיק, וירידות של 70%–80% אינן חריגות כאן. הגודל המוגבל הוא ההגנה.</p>
+    </div>
+  </div>
+</section>
+
+<!-- א7 · מינוף -->
+<section class="slide" data-mode="aggressive" style="--glow:rgba(249,115,22,.16)">
+  <div class="inner">
+    <span class="eyebrow">נכס 4 · המאיץ</span>
+    <h2 class="h-lg" style="color:var(--orange)">150,000 ₪</h2>
+    <div class="share"><i style="width:15%;background:var(--orange)"></i></div>
+    <p class="lead">קרן <strong>SSO</strong> שמכפילה את התנועה <strong>היומית</strong> של ה-S&amp;P 500: ביום שהמדד עולה 1% — היא עולה 2%. ביום שהוא יורד 1% — היא יורדת 2%. ההכפלה מתאפסת ומתחילה מחדש כל בוקר.</p>
+    <div class="math"><b>150,000 ₪</b><span class="eq">שגדלים ב-16% בשנה</span><span class="eq">←</span><b style="color:var(--orange)">662,000 ₪</b></div>
+    <div class="punch">
+      <span class="pl">למה זה לא סתם ״פי 2״</span>
+      <p>מדד שעולה 10% ואז יורד 10% נמצא במינוס 1%. הקרן הממונפת עלתה 20%, ירדה 20% — והיא במינוס 4%. ככה שוק עצבני שוחק אותה גם בלי ירידה אמיתית.</p>
+    </div>
+    <div class="note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+      <p>לכן זה רכיב לשוק עולה, בגודל מוגבל של 15%: ירידת מדד של 30% מתורגמת כאן ל-<b>50%–60%</b> — והדרך חזרה ארוכה יותר, כי צריך לטפס מבור עמוק יותר.</p>
+    </div>
+  </div>
+</section>
+
+<!-- א8 · עוגן -->
+<section class="slide" data-mode="aggressive" style="--glow:rgba(79,135,245,.17)">
+  <div class="inner">
+    <span class="eyebrow">נכס 5 · העוגן</span>
+    <h2 class="h-lg" style="color:var(--sp)">100,000 ₪</h2>
+    <div class="share"><i style="width:10%;background:var(--sp)"></i></div>
+    <p class="lead">‎S&amp;P 500 רגיל, בלי מינוף ובלי ריכוזיות — דרך <strong>VOO</strong> או קרן אירית צוברת, לפי שיקולי המס בביצוע.</p>
+    <div class="math"><b>100,000 ₪</b><span class="eq">שגדלים ב-8.5% בשנה</span><span class="eq">←</span><b style="color:var(--sp)">226,000 ₪</b></div>
+    <div class="punch g">
+      <span class="pl">התפקיד</span>
+      <p>להזכיר שגם תיק אגרסיבי צריך רצפה יציבה — ולתת לאן לאזן כשהנכסים החמים מזנקים.</p>
+    </div>
+  </div>
+</section>
+
+<!-- א9 · ההפקדה החודשית -->
+<section class="slide" data-mode="aggressive" style="--glow:rgba(245,165,36,.15)">
+  <div class="inner">
+    <span class="eyebrow">ההפקדה החודשית כאן</span>
+    <h2 class="h-lg">אותם 500 ₪ —<br>עובדים קשה יותר</h2>
+    <p class="lead">אותה תוכנית הפקדות בדיוק: מתחילים ב-500 ₪ בחודש ומוסיפים 250 ₪ בכל ינואר. אבל כאן הכסף החדש גדל <strong>בכ-15% בשנה במקום 8.5%.</strong></p>
+    <div class="pair">
+      <div><b>195,000 ₪</b><span>סך הכול מהכיס בעשור</span></div>
+      <div style="border-color:color-mix(in srgb,var(--warn) 40%,transparent)"><b style="color:var(--warn)">כ-359,000 ₪</b><span>שוויין בשנת היעד</span></div>
+    </div>
+    <div class="punch">
+      <span class="pl">איך קונים בלי לשרוף עמלות</span>
+      <p>נייר אחד בחודש, כמו במסלול המאוזן — רק שכאן קונים בכל חודש את הנכס שהכי רחוק מתחת ליעד שלו. ההפקדה עצמה עושה חצי מהאיזון השנתי.</p>
+    </div>
+    <p class="foot">בשנים אדומות זה החלק החשוב ביותר: הכסף החדש קונה בזול את הנכסים שירדו הכי חזק.</p>
+  </div>
+</section>
+
+<!-- א10 · מול המאוזן -->
+<section class="slide" data-mode="aggressive" style="--glow:rgba(32,201,151,.15)">
+  <div class="inner">
+    <span class="eyebrow">מול המסלול המאוזן</span>
+    <h2 class="h-lg">פי 2 בתמורה,<br>פי 2 בכאב</h2>
+    <div class="pair">
+      <div><b style="color:var(--cash)">כ-2.57 מ׳</b><span>המסלול המאוזן</span></div>
+      <div style="border-color:color-mix(in srgb,var(--warn) 40%,transparent)"><b style="color:var(--warn)">כ-4.79 מ׳</b><span>המסלול האגרסיבי</span></div>
+    </div>
+    <div class="pair">
+      <div><b>30%−</b><span>ירידה אופיינית במשבר</span></div>
+      <div style="border-color:color-mix(in srgb,var(--red) 35%,transparent)"><b style="color:var(--red)">50%−</b><span>ירידה אופיינית במשבר</span></div>
+    </div>
+    <p class="lead">ההפרש הוא לא רק במספר הסופי — הוא ביכולת לראות <strong>מיליון שקל הופכים ל-550 אלף על הנייר</strong> ולא למכור.</p>
+    <div class="punch g">
+      <span class="pl">האמת הפשוטה</span>
+      <p>אם מכירה בפאניקה היא תרחיש אפשרי עבורך — המסלול המאוזן ינצח בפועל, גם אם על הנייר הוא מנצח פחות.</p>
+    </div>
+  </div>
+</section>
+
+<!-- א11 · שנה אדומה -->
+<section class="slide" data-mode="aggressive" style="--glow:rgba(242,107,107,.15)">
+  <div class="inner">
+    <span class="eyebrow">תרחיש מבחן · שנה אדומה</span>
+    <h2 class="h-lg">כך נראית<br>שנה כמו 2022</h2>
+    <div class="legend">
+      <div class="lrow"><i class="dot" style="background:var(--reit)"></i><span class="ln">נאסד״ק 100</span><span class="lv" style="color:var(--red)">‎35%−</span></div>
+      <div class="lrow"><i class="dot" style="background:var(--tech)"></i><span class="ln">שבבים ו-AI</span><span class="lv" style="color:var(--red)">‎40%−</span></div>
+      <div class="lrow"><i class="dot" style="background:var(--warn)"></i><span class="ln">קריפטו</span><span class="lv" style="color:var(--red)">‎65%−</span></div>
+      <div class="lrow"><i class="dot" style="background:var(--orange)"></i><span class="ln">מינוף פי 2</span><span class="lv" style="color:var(--red)">‎55%−</span></div>
+      <div class="lrow"><i class="dot" style="background:var(--sp)"></i><span class="ln">עוגן S&amp;P 500</span><span class="lv" style="color:var(--red)">‎20%−</span></div>
+    </div>
+    <div class="math"><b>1,000,000 ₪</b><span class="eq">הופכים בשנה כזאת ל-</span><b style="color:var(--red)">כ-578,000 ₪</b><span class="eq">על הנייר</span></div>
+    <div class="punch g">
+      <span class="pl">וזה בדיוק המבחן</span>
+      <p>מינוס 42% זו לא תקלה בתוכנית — זה התרחיש שהתוכנית דורשת לעבור בלי למכור. מי שהחזיק ב-2022 ראה שיאים חדשים תוך כשנתיים.</p>
+    </div>
+    <p class="foot">הירידות מעוגלות לפי סדרי הגודל של 2022 ותקופות דומות. אין ודאות שההתאוששות הבאה תהיה מהירה באותה מידה.</p>
+  </div>
+</section>
+
+<!-- א12 · מה באמת נשאר ביד -->
+<section class="slide" data-mode="aggressive" style="--glow:rgba(245,165,36,.16)">
+  <div class="inner">
+    <span class="eyebrow">מה באמת נשאר ביד</span>
+    <h2 class="h-lg">‎4.8 מיליון<br>זה לא 4.8 מיליון</h2>
+    <div class="chain">
+      <div class="link"><span class="lv">4,786,000 ₪</span><span class="ld">זה מה שיהיה בחשבון בעוד עשר שנים, כולל ההפקדות</span></div>
+      <div class="minus">אבל המחירים יעלו בינתיים — כ-2.5% בשנה</div>
+      <div class="link"><span class="lv" style="color:var(--warn)">3,739,000 ₪</span><span class="ld">זה מה ששווה הסכום הזה בכסף של היום</span></div>
+      <div class="minus">ומהרווח הריאלי צריך לשלם 25% מס</div>
+      <div class="link" style="border-color:color-mix(in srgb,var(--cash) 40%,transparent)"><span class="lv" style="color:var(--cash)">כ-3,096,000 ₪</span><span class="ld">זה מה שבאמת נשאר ביד, בכסף של היום</span></div>
+    </div>
+    <div class="punch g">
+      <span class="pl">בשורה התחתונה</span>
+      <p>בערך פי 2.65 ריאלי ונטו על כל שקל שהופקד — לעומת כ-פי 1.55 במסלול המאוזן באותו חישוב. זה הפער האמיתי בין המסלולים.</p>
+    </div>
+  </div>
+</section>
+
+<!-- א13 · כללי ברזל -->
+<section class="slide" data-mode="aggressive" style="--glow:rgba(245,165,36,.16)">
+  <div class="inner">
+    <span class="eyebrow">כללי הברזל</span>
+    <h2 class="h-lg">אפס מכירות,<br>איזון פעם בשנה</h2>
+    <div class="rows">
+      <div class="row"><span class="n">1</span><span class="rt"><b>לא מוכרים — גם במינוס 50%.</b><em>המכירה בתחתית היא ההפסד היחיד שאין ממנו חזרה</em></span></div>
+      <div class="row"><span class="n">2</span><span class="rt"><b>מאזנים מחדש כל ינואר ליחסי 35/25/15/15/10.</b><em>מוכרים חלק ממה שזינק, קונים את מה שנחלש</em></span></div>
+      <div class="row"><span class="n">3</span><span class="rt"><b>ממשיכים להפקיד גם בשנים אדומות.</b><em>בירידות הכסף החדש קונה בזול</em></span></div>
+      <div class="row"><span class="n">4</span><span class="rt"><b>לא מגדילים את המינוף והקריפטו מעבר לתקרה.</b><em>‎15% לכל אחד — גם אחרי שנה חלומית</em></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- א14 · ביצוע -->
+<section class="slide" data-mode="aggressive" style="--glow:rgba(181,123,247,.17)">
+  <div class="inner">
+    <span class="eyebrow">ביצוע ב-IBI · וול סטריט</span>
+    <h2 class="h-lg">ארבעה צעדים</h2>
+    <div class="rows">
+      <div class="row"><span class="n">1</span><span class="rt"><b>פותחים מסלול מסחר בחו״ל</b><em>בחשבון ה-IBI · פטור מדמי משמרת נשמר</em></span></div>
+      <div class="row"><span class="n">2</span><span class="rt"><b>ממירים שקלים לדולרים במרוכז</b><em>דרך חדר העסקאות — זול משמעותית מהבנק</em></span></div>
+      <div class="row"><span class="n">3</span><span class="rt"><b>קונים QQQ, SMH, IBIT ו-SSO בפריסה</b><em>‎4–7 חודשים · העוגן דרך קרן אירית צוברת</em></span></div>
+      <div class="row"><span class="n">4</span><span class="rt"><b>מס במקור אוטומטי, והוראת הקבע ממשיכה</b><em>וגדלה ב-250 ₪ בכל ינואר</em></span></div>
+    </div>
+    <p class="foot" style="margin-top:8px">
+      ניירות אמריקאיים חשופים למס עיזבון אמריקאי מעל תקרה מסוימת ולתנודות שער הדולר — לוודא מול יועץ מס לפני ביצוע.
+      המסלול כולו הדמיה של הנחות תשואה אופטימיות ואינו ייעוץ השקעות; מינוף ונכסים דיגיטליים עלולים לרדת בחדות, וההון חשוף להפסד.
     </p>
   </div>
 </section>
@@ -623,6 +983,31 @@ var MIX=[
     off+=len;
   });
   document.getElementById('donut').innerHTML=
+    '<g transform="rotate(-90 90 90)"><circle cx="90" cy="90" r="'+R+'" fill="none" style="stroke:var(--donut-track)" stroke-width="19"/>'+rings+'</g>'+
+    '<text x="90" y="86" text-anchor="middle" style="fill:var(--text);font-family:\'Frank Ruhl Libre\',serif;font-size:24px;font-weight:900">1,000,000</text>'+
+    '<text x="90" y="106" text-anchor="middle" style="fill:var(--faint);font-family:Assistant,sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em">שקלים</text>';
+})();
+
+/* aggressive-track donut: 35/25/15/15/10 */
+(function(){
+  var host=document.getElementById('donutA');
+  if(!host) return;
+  var MIXA=[
+    {amt:350000, c:'var(--reit)'},
+    {amt:250000, c:'var(--tech)'},
+    {amt:150000, c:'var(--warn)'},
+    {amt:150000, c:'var(--orange)'},
+    {amt:100000, c:'var(--sp)'}
+  ];
+  var R=65, C=2*Math.PI*R, gap=3, off=0, rings='';
+  MIXA.forEach(function(s){
+    var len=C*(s.amt/1e6);
+    rings+='<circle cx="90" cy="90" r="'+R+'" fill="none" style="stroke:'+s.c+'" stroke-width="19" '+
+      'stroke-dasharray="'+(len-gap).toFixed(2)+' '+(C-len+gap).toFixed(2)+'" '+
+      'stroke-dashoffset="'+(-off).toFixed(2)+'"/>';
+    off+=len;
+  });
+  host.innerHTML=
     '<g transform="rotate(-90 90 90)"><circle cx="90" cy="90" r="'+R+'" fill="none" style="stroke:var(--donut-track)" stroke-width="19"/>'+rings+'</g>'+
     '<text x="90" y="86" text-anchor="middle" style="fill:var(--text);font-family:\'Frank Ruhl Libre\',serif;font-size:24px;font-weight:900">1,000,000</text>'+
     '<text x="90" y="106" text-anchor="middle" style="fill:var(--faint);font-family:Assistant,sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em">שקלים</text>';
@@ -705,16 +1090,33 @@ var MIX=[
     '<text x="316" y="14" text-anchor="end" style="fill:var(--cash);font-family:Assistant,sans-serif;font-size:12px;font-weight:700">שיא חדש</text>';
 })();
 
-/* ---------- navigation ---------- */
-var slides=[].slice.call(document.querySelectorAll('.slide')), N=slides.length, i=0;
+/* ---------- navigation (mode-aware: picker / balanced / aggressive) ---------- */
+var all=[].slice.call(document.querySelectorAll('.slide'));
+var slides=[], N=0, i=0, mode=null;
 var rail=document.getElementById('rail'), count=document.getElementById('count');
 var prev=document.getElementById('prev'), next=document.getElementById('next');
+
+function setMode(m){
+  mode=m;
+  document.body.setAttribute('data-mode', m||'welcome');
+  all.forEach(function(s){ s.classList.remove('on'); s.style.transform=''; s.style.opacity=''; });
+  slides=all.filter(function(s){ return s.getAttribute('data-mode')===m; });
+  N=slides.length;
+  window.scrollTo(0,0);
+  if(N){ i=-1; show(0,1); }
+}
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-set-mode]');
+  if(!b) return;
+  var m=b.getAttribute('data-set-mode');
+  setMode(m==='welcome'?null:m);
+});
 
 /* dir: 1 = forward (content moves left, incoming enters from the right),
    -1 = back (mirrored) — enter and exit share the same path.
    flick=true when a gesture carried momentum: slightly faster, slight overshoot. */
 function show(n,dir,flick){
-  if(n<0||n>N-1) return;
+  if(!N||n<0||n>N-1) return;
   var was=i; i=n;
   slides.forEach(function(s,k){
     s.classList.toggle('on',k===i);
@@ -764,7 +1166,7 @@ if(!REDUCED&&window.PointerEvent){(function(){
   function project(v){ return (v/1000)*0.998/(1-0.998); }
 
   document.addEventListener('pointerdown',function(e){
-    if(e.pointerType==='mouse'||editing()) return;
+    if(!N||e.pointerType==='mouse'||editing()) return;
     if(e.target.closest('button')||e.target.closest('.nav')) return;
     var s=slides[i], base=0;
     if(anim){ /* grab mid-flight: continue from the presentation value */
@@ -842,7 +1244,7 @@ if(!REDUCED&&window.PointerEvent){(function(){
   },{passive:true});
 }
 
-show(0);
+setMode(null);
 })();
 </script>
 </body>
